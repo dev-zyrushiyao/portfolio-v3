@@ -10,6 +10,7 @@ import CloseIcon from "../components-svg/CloseIcon";
 import { addInitData, getProjects, Project } from "../services/projects";
 import Link from "next/link";
 import { prototype } from "events";
+import PrimaryButton from "../components-ui/PrimaryButton";
 
 export default function Projects() {
   //state
@@ -210,6 +211,7 @@ export default function Projects() {
         <div className="content flex flex-col gap-10 lg:p-20 p-10">
           <div className="border-b border-gray-400 relative">
             <h3>Personal Projects</h3>
+            <PrimaryButton label={"Press me"} />
             <div className="bg-amber-300 h-10 w-20 absolute inset-0 top-3 -left-5 -z-10 hidden lg:block"></div>
           </div>
 
