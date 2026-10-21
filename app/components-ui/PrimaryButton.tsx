@@ -12,20 +12,19 @@ export default function PrimaryButton({ label }: { label: string }) {
       gsap.set(container.current, { opacity: 1 });
 
       const button = container.current?.querySelector("button");
-      const expandingBg = container.current?.querySelector(
-        ".expanding-background",
-      );
-      if (!expandingBg || !button) return;
+      const expandingCircle =
+        container.current?.querySelector(".expanding-circle");
+      if (!expandingCircle || !button) return;
 
-      gsap.set(expandingBg, { scale: 0 });
+      gsap.set(expandingCircle, { scale: 0 });
 
-      const hoverIn = gsap.to(expandingBg, {
+      const hoverIn = gsap.to(expandingCircle, {
         paused: true,
         scale: 1,
         ease: "circ",
       });
 
-      const hoverOut = gsap.to(expandingBg, {
+      const hoverOut = gsap.to(expandingCircle, {
         paused: true,
         scale: 0,
         ease: "circ",
@@ -45,11 +44,11 @@ export default function PrimaryButton({ label }: { label: string }) {
   return (
     <div ref={container} className="opacity-0">
       <button
-        className="w-40 h-13 rounded-4xl text-base relative overflow-clip"
+        className="w-40 h-13 rounded-4xl text-base border border-gray-300 relative overflow-clip cursor-pointer"
         style={{ backgroundColor: color.accent }}
       >
         <span className="relative z-10">{label}</span>
-        <div className="expanding-background bg-green-200 h-50 w-50 absolute top-1/2 left-1/2 -translate-1/2 origin-center rounded-full" />
+        <div className="expanding-circle bg-pink-300 h-50 w-50 absolute top-1/2 left-1/2 -translate-1/2 origin-center rounded-full" />
       </button>
     </div>
   );

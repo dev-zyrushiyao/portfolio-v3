@@ -1,6 +1,6 @@
 import supabase from "./supabase";
 
-export interface Project {
+export interface ProjectProp {
   readonly id?: string;
   readonly title: string;
   readonly description_desktop: string;
@@ -18,7 +18,7 @@ export interface Project {
   readonly updated_at?: string;
 }
 
-export async function getProjects(): Promise<Project[]> {
+export async function getProjects(): Promise<ProjectProp[]> {
   const { data, error } = await supabase
     .from("projects")
     .select("*")
@@ -29,7 +29,7 @@ export async function getProjects(): Promise<Project[]> {
     return [];
   }
 
-  return data as Project[];
+  return data as ProjectProp[];
 }
 
 export async function addInitData() {

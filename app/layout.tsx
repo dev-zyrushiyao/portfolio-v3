@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Google_Sans_Flex, Lora, Noto_Sans_Tagalog } from "next/font/google";
 import "./globals.css";
 import NavBar from "./components-ui/NavBar";
-import Banner from "./components-svg/Banner";
 
 // const geistSans = Geist({
 //   variable: "--font-geist-sans",
