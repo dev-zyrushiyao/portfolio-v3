@@ -1,10 +1,21 @@
-import Link from "next/link";
+"use client";
+
 import React, { useRef } from "react";
 import color from "../design-system/DesignSystem";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 
-export default function PrimaryButton({ label }: { label: string }) {
+export default function PrimaryButton({
+  label,
+  type,
+  disabled,
+  onClick,
+}: {
+  label: string;
+  type: "button" | "reset" | "submit";
+  disabled?: boolean;
+  onClick?: () => void;
+}) {
   const container = useRef<HTMLDivElement>(null);
 
   useGSAP(
@@ -44,8 +55,11 @@ export default function PrimaryButton({ label }: { label: string }) {
   return (
     <div ref={container} className="opacity-0">
       <button
+        type={type}
+        disabled={disabled}
         className="w-40 h-13 rounded-4xl text-base border border-gray-300 relative overflow-clip cursor-pointer"
         style={{ backgroundColor: color.accent }}
+        {...(onClick && { onClick: onClick })}
       >
         <span className="relative z-10">{label}</span>
         <div className="expanding-circle bg-pink-300 h-50 w-50 absolute top-1/2 left-1/2 -translate-1/2 origin-center rounded-full" />
