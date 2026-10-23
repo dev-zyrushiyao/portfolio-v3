@@ -1,18 +1,18 @@
 "use client";
 
-import Banner from "./components-svg/Banner";
+import Banner from "./components/svg/Banner";
 import WebBg from "@/assets/background/background-web.png";
-import Mushroom from "./components-svg/Mushroom";
-import QuestionBox from "./components-svg/QuestionBox";
-import LeafFace from "./components-svg/LeafFace";
+import Mushroom from "./components/svg/Mushroom";
+import QuestionBox from "./components/svg/QuestionBox";
+import LeafFace from "./components/svg/LeafFace";
 import { useGSAP } from "@gsap/react";
 import { JSX, useRef } from "react";
 import gsap from "gsap";
-import BlogIcon from "./components-svg/BlogIcon";
-import ProjectIcon from "./components-svg/ProjectIcon";
+import BlogIcon from "./components/svg/BlogIcon";
+import ProjectIcon from "./components/svg/ProjectIcon";
 import DrawSVGPlugin from "gsap/DrawSVGPlugin";
 import color from "./design-system/DesignSystem";
-import FooterBar from "./components-ui/FooterBar";
+import FooterBar from "./components/ui/FooterBar";
 import Link from "next/link";
 
 type Certificates = { title: string; certificateList: string[] };

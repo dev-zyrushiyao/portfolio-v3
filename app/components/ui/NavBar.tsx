@@ -1,13 +1,14 @@
 "use client";
 
 import React, { useRef } from "react";
-import Logo from "../components-svg/Logo";
+import Logo from "../svg/Logo";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-import LineBottom from "../components-svg/LineBottom";
+import LineBottom from "../svg/LineBottom";
 import DrawSVGPlugin from "gsap/DrawSVGPlugin";
-import HamburgerMenu from "../components-svg/HamburgerMenu";
+import HamburgerMenu from "../svg/HamburgerMenu";
 import Link from "next/link";
+import color from "@/app/design-system/DesignSystem";
 
 type NavLink = { title: string; link: string };
 
@@ -17,7 +18,7 @@ const navMenu: NavLink[] = [
   { title: "Blog", link: "/blog" },
   { title: "Contact", link: "/contact" },
 ];
-const defaultBg: string = "#FE0002";
+const defaultBg: string = color.primary;
 const defaultFontColor: string = "#FFFFFF";
 
 gsap.registerPlugin(DrawSVGPlugin);
@@ -164,7 +165,7 @@ export default function NavBar() {
         </div>
       </nav>
       <div>
-        <div className="mobile-menu h-dvh w-[30vh] absolute top-20 left-full z-10 bg-green-200 lg:invisible block">
+        <div className="mobile-menu h-dvh w-[30vh] absolute top-20 left-full z-10 lg:invisible block">
           <ul className="h-150 flex flex-col justify-center items-center gap-20">
             {navMenu.map((menu) => {
               return (

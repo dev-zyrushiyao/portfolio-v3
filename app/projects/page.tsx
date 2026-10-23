@@ -2,12 +2,12 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
-import CloseIcon from "../components-svg/CloseIcon";
+import CloseIcon from "../components/svg/CloseIcon";
 import { addInitData, getProjects, ProjectProp } from "../services/projects";
-import ProjectCard from "../components-ui/ProjectCard";
-import ProjectModal from "../components-ui/ProjectModal";
-import LoadingProjectCard from "../components-ui/LoadingProjectCard";
-import MiniBanner from "../components-ui/MiniBanner";
+import ProjectCard from "../components/ui/ProjectCard";
+import ProjectModal from "../components/ui/ProjectModal";
+import LoadingProjectCard from "../components/ui/LoadingProjectCard";
+import MiniBanner from "../components/ui/MiniBanner";
 
 const defaultBannerBg: string = "#BFE2F2";
 const defaultLabel: string = "Projects";

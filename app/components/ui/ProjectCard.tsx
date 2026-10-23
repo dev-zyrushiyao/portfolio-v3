@@ -1,8 +1,8 @@
 import React, { useRef } from "react";
-import { ProjectProp } from "../services/projects";
+import { ProjectProp } from "../../services/projects";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-import color from "../design-system/DesignSystem";
+import color from "../../design-system/DesignSystem";
 import Image from "next/image";
 
 interface ProjectCardProp {

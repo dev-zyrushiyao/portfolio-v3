@@ -1,7 +1,6 @@
 "use server";
 
 import supabase from "./supabase";
-
 export type FormResult = { success: boolean; message: string };
 
 export async function submitContact(

@@ -1,7 +1,7 @@
 import React from "react";
-import color from "../design-system/DesignSystem";
-import Logo from "../components-svg/Logo";
-import LogoSolo from "../components-svg/LogoSolo";
+import color from "../../design-system/DesignSystem";
+import Logo from "../svg/Logo";
+import LogoSolo from "../svg/LogoSolo";
 
 type Link = { title: string; link: string };
 type FooterElem = { section: string; content: Link[] };

@@ -2,8 +2,8 @@
 
 import React, { useActionState } from "react";
 import PrimaryButton from "./PrimaryButton";
-import { CategoryProp } from "../services/category";
-import { submitContact } from "../services/contact";
+import { CategoryProp } from "../../services/category";
+import { submitContact } from "../../services/contact";
 
 type ContactFormProps = { categoryMenu: CategoryProp[] };
 

@@ -1,7 +1,7 @@
 import React from "react";
-import MiniBanner from "../components-ui/MiniBanner";
+import MiniBanner from "../components/ui/MiniBanner";
 import { CategoryProp, getCategory } from "../services/category";
-import ContactForm from "../components-ui/ContactForm";
+import ContactForm from "../components/ui/ContactForm";
 
 const defaultBannerBg: string = "#FFC5D3";
 const defaultLabel: string = "Contact";
