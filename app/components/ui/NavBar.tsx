@@ -75,7 +75,7 @@ export default function NavBar() {
       const hamburgerMenu = container.current?.querySelector(".mobile-menu");
       if (!hamburgerPath || !hamburgerMenu) return;
 
-      //hover line animation
+      //toggle hamburger animation
       const hamburgerTl = gsap
         .timeline({ paused: true })
         .fromTo(hamburgerMenu, { xPercent: 0 }, { xPercent: -100 });

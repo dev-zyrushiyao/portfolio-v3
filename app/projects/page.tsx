@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import CloseIcon from "../components/svg/CloseIcon";
-import { addInitData, getProjects, ProjectProp } from "../services/projects";
+import { getProjects, ProjectProp } from "../services/projects";
 import ProjectCard from "../components/ui/ProjectCard";
 import ProjectModal from "../components/ui/ProjectModal";
 import LoadingProjectCard from "../components/ui/LoadingProjectCard";
@@ -47,7 +47,7 @@ export default function Projects() {
         document.body.style.overflow = "unset";
       }
     },
-    { scope: container, dependencies: [isModalOpen] },
+    { scope: container, dependencies: [] },
   );
 
   function handleClickModal(): void {

@@ -68,7 +68,7 @@ export default function ProjectModal({ selectedProject }: ProjectModalProp) {
           <div className="modal-project-link flex flex-row flex-wrap lg:justify-end justify-start gap-3 w-full">
             {selectedProject.demo_url && (
               <Link href={selectedProject.demo_url} target="_blank">
-                <PrimaryButton label="Live Demo" />
+                <PrimaryButton label="Live Demo" type="button" />
               </Link>
             )}
 

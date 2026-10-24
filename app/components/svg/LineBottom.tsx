@@ -10,7 +10,7 @@ export default function LineBottom({
       <line
         style={{
           fill: "none",
-          stroke: "rgb(0, 0, 0)",
+          // stroke: "rgb(0, 0, 0)",
           strokeWidth: `${strokeWidthProps ?? 7}px`,
           strokeLinecap: "round",
         }}
