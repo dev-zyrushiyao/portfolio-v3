@@ -51,7 +51,7 @@ export default function ProjectModal({ selectedProject }: ProjectModalProp) {
               {selectedProject.tags.map((tag) => {
                 console.log("tag", tag);
                 return (
-                  <li key={tag.name}>
+                  <li key={tag.icon_url}>
                     <Image
                       src={tag.icon_url}
                       alt={tag.name}
