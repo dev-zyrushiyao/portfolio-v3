@@ -90,6 +90,8 @@ export default function ContactForm({ categoryMenu }: ContactFormProps) {
             name="message"
             id="message-input"
             placeholder="Type your message here.."
+            minLength={10}
+            maxLength={1000}
             cols={30}
             className="border border-gray-400 rounded-sm p-2 h-50"
           ></textarea>
