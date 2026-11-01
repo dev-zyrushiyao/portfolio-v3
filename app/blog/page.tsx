@@ -1,17 +1,28 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import MiniBanner from "../components/ui/MiniBanner";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import color from "../design-system/DesignSystem";
+import { BlogProp, getAllBlogs } from "../services/blog";
 
 const defaultBannerBg: string = "#A7E074";
 const defaultLabel: string = "Blog";
 
 export default function Blog() {
-  const container = useRef<HTMLDivElement>(null);
+  const [blogs, setBlogs] = React.useState<BlogProp[]>([]);
 
+  useEffect(() => {
+    async function fetchBlogs() {
+      const res = await getAllBlogs();
+      setBlogs(res);
+    }
+    fetchBlogs();
+  }, [blogs]);
+
+  //animation
+  const container = useRef<HTMLDivElement>(null);
   const { contextSafe } = useGSAP(
     () => {
       const blogList = gsap.utils.toArray<HTMLLIElement>(
@@ -120,7 +131,7 @@ export default function Blog() {
                 </div>
 
                 <ul className="blog-list-date flex flex-col gap-5">
-                  {Array.from({ length: 3 }, (_, index) => {
+                  {blogs.map((blog, index) => {
                     return (
                       <li key={index} className="list-content">
                         <div className="blog-month border-b border-b-gray-300 cursor-pointer">
@@ -139,7 +150,7 @@ export default function Blog() {
                               onMouseLeave={handleMouseLeaveBlogDate}
                               className="text-sm text-center cursor-pointer"
                             >
-                              06-09
+                              {blog.title}
                             </li>
                             <li className="text-sm text-center">06-20</li>
                             <li className="text-sm text-center">06-21</li>

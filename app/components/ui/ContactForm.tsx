@@ -8,15 +8,14 @@ import { submitContact } from "../../services/contact";
 type ContactFormProps = { categoryMenu: CategoryProp[] };
 
 export default function ContactForm({ categoryMenu }: ContactFormProps) {
-  const [state, formAction, isPending] = useActionState(submitContact, {
-    success: false,
-    message: "",
-  });
+  const [state, formAction, isPending] = useActionState(submitContact, null);
+
+
 
   return (
     <div className=" w-150 flex flex-col items-center">
       <div className="message-wrapper h-10 w-full">
-        {state.message && (
+        {state && (
           <p
             className={`font-semibold text-center ${state.success ? "text-green-600" : "text-red-600"}`}
           >

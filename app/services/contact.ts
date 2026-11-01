@@ -1,32 +1,47 @@
 "use server";
 
-import supabase from "./supabase";
-export type FormResult = { success: boolean; message: string };
+export type FormState = { success: boolean; message: string } | null;
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
 
 export async function submitContact(
-  prevState: FormResult,
+  prevState: FormState,
   formData: FormData,
-): Promise<FormResult> {
+): Promise<FormState> {
+  //form data values
   const sender_name = formData.get("sender_name")?.toString().trim();
   const sender_email = formData.get("sender_email")?.toString().trim();
   const category_id = formData.get("category_id");
   const subject = formData.get("subject")?.toString().trim();
   const message = formData.get("message")?.toString().trim();
 
-  const { error } = await supabase
-    .from("contact")
-    .insert([{ sender_name, sender_email, category_id, subject, message }]);
+  const res = await fetch(
+    "https://ylfbtnwzwdzqsmipjzuv.supabase.co/rest/v1/contact",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        apikey: supabaseKey as string,
+      },
+      body: JSON.stringify({
+        sender_name,
+        sender_email,
+        category_id,
+        subject,
+        message,
+      }),
+    },
+  );
 
-  if (error) {
-    console.log("Supabase Insert Error:", error.message, error.details);
+  if (!res.ok) {
+    const errorData = await res.json();
     return {
       success: false,
-      message: "Failed to send message. Please try again.",
-    } as FormResult;
+      message: `Error sending message. Please try again later. (${errorData.message})`,
+    } as FormState;
   }
 
   return {
     success: true,
     message: "Thank you! Your message has been sent successfully.",
-  } as FormResult;
+  } as FormState;
 }
