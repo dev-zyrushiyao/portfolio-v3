@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import MiniBanner from "../components/ui/MiniBanner";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
@@ -19,44 +19,140 @@ export default function Blog() {
       setBlogs(res);
     }
     fetchBlogs();
-  }, [blogs]);
+  }, []);
+
+  //Map - returns Full year
+  //Map is converted as Set to prevent duplicate years
+  //Set is converted to Array to sort.
+  const uniqueYears = Array.from(
+    new Set(blogs.map((blog) => new Date(blog.created_at).getFullYear())),
+  ).sort((a, b) => b - a);
+
+  //animation state
+  const [currentIndex, setCurrentIndex] = useState<number>(0);
+  const maxIndex = uniqueYears.length - 1;
+  const isAtStart = currentIndex === 0;
+  const isAtEnd = currentIndex === maxIndex;
+
+  //filter the blog using uniqueYears(number format) and current Index
+  //current index change it re-filter the blogs according to the year
+  //sample data 2025 = [{blog} , {blog}]
+  const selectedYear = uniqueYears[currentIndex];
+  const filteredYearBlogs = blogs.filter(
+    (blog) => new Date(blog.created_at).getFullYear() === selectedYear,
+  );
+
+  //extracts the month of the filtered blog posts per year as Set then convert as Array to map in JSX
+  // sample data of letterFormat [{January, March , June}]
+  // sample data of numberFormat [{1, 3 , 6}]
+  const monthEntryPerYear = {
+    letterFormat: Array.from(
+      new Set(
+        filteredYearBlogs.map((fblog) => {
+          return new Date(fblog.created_at).toLocaleString("en-PH", {
+            month: "long",
+          });
+        }),
+      ),
+    ),
+    numberFormat: Array.from(
+      new Set(
+        filteredYearBlogs.map((fblog) => {
+          return new Date(fblog.created_at).getMonth() + 1;
+        }),
+      ),
+    ),
+  };
+
+  //e sample value = 11 , 1 (Nov , January)
+  //blogs filtered if a blog month entries is equal to e value returns an array
+  //.map returns an array of filtered array of blog entries
+  //sample data [november[{blog-1},{blog-2}], january[{blog-1}, {blog-2},{blog-3}]]
+  //filteredMonthlyBlogs returns 2-D Array [[]]
+  //loop map monthEntryPerYear in JSX then access the filteredMonthlyBlogs by the map index then use map filteredBlog to access its properties
+  const filteredMonthlyBlogs = monthEntryPerYear.numberFormat.map((e) => {
+    return filteredYearBlogs.filter((fblog) => {
+      return new Date(fblog.created_at).getMonth() + 1 === e;
+    });
+  });
+
+  //separating blog per month logic
+  // monthEntryPerYear.letterFormat.forEach((target, index) => {
+  //   console.log("Month index: ", index);
+  //   console.log(filteredMonthlyBlogs[index]); <-Loop to access its properties
+  //   console.log("---------");
+  // });
 
   //animation
   const container = useRef<HTMLDivElement>(null);
   const { contextSafe } = useGSAP(
     () => {
-      const blogList = gsap.utils.toArray<HTMLLIElement>(
-        ".blog-list-date > li:not(:first-child)",
+      if (blogs.length === 0) return;
+
+      //FOUC
+      gsap.set(container.current, { opacity: 1 });
+
+      //year selector animation
+      const yearSelector = gsap.utils.toArray<HTMLDivElement>(
+        ".unique-year",
         container.current,
       );
-      if (!blogList) return;
+      if (!yearSelector) return;
+
+      // < YEAR > Tween animation
+      gsap.to(yearSelector, {
+        xPercent: currentIndex * -100,
+        duration: 0.5,
+        ease: "power1.inOut",
+      });
+
+      const blogWrapper = gsap.utils.toArray<HTMLLIElement>(
+        ".blog-wrapper:not(:first-child)",
+        container.current,
+      );
 
       //initial setup: hides the rest of the blog entries except the first child of the month
-      const blogEntries = blogList
+      const blogEntries = blogWrapper
         .flatMap((list) => {
           return list.querySelector(".blog-entries");
         })
         .map((elem) => {
           return elem;
         });
+
+      if (!blogWrapper || blogEntries) return;
+
+      // set the rest of the blog entries as collapsed leaving the first child (latest month) uncollapsed
       gsap.set(blogEntries, {
         height: 0,
         autoAlpha: 0,
         transformOrigin: "0% 0%",
       });
     },
-    { scope: container },
+    { scope: container, dependencies: [blogs, currentIndex] },
   );
+
+  function handlePrevYear() {
+    if (currentIndex > 0) {
+      setCurrentIndex((prev) => prev - 1);
+    }
+  }
+
+  function handleNextYear() {
+    if (currentIndex < maxIndex) {
+      setCurrentIndex((prev) => prev + 1);
+    }
+  }
 
   function handleClickBlogMonth(e: React.MouseEvent) {
     //context safe animation inject
     const context = contextSafe(() => {
-      const blogMonth = e.currentTarget.closest("li");
+      const blogWrapper = e.currentTarget.closest(".blog-wrapper");
 
-      const blogEntries = blogMonth?.querySelector(".blog-entries");
-      if (!blogEntries) return;
+      const blogEntries = blogWrapper?.querySelector(".blog-entries");
+      if (!blogWrapper || !blogEntries) return;
 
-      // Check the actual current height of this specific element
+      // Check the actual current height of .blog-entries element
       const currentHeight = gsap.getProperty(blogEntries, "height");
       const isOpen = Number(currentHeight) > 0;
 
@@ -119,47 +215,65 @@ export default function Blog() {
           </div>
           <div className="wrapper  flex flex-col lg:flex-row gap-10">
             <div className="blog-list h-fit border-2 border-gray-300 bg-gray-200 rounded-2xl p-5">
-              <div ref={container} className="blog-wrapper w-50">
+              <div ref={container} className="blog-wrapper w-50 opacity-0">
                 <div className="blog-year flex flex-row h-20 w-full gap-3 justify-center items-center">
-                  <button className="text-3xl font-semibold cursor-pointer">
+                  <button
+                    onClick={handlePrevYear}
+                    disabled={isAtStart}
+                    className="prev-year-btn text-3xl font-semibold cursor-pointer"
+                  >
                     {"<"}
                   </button>
-                  <h6 className="font-sans font-normal">2026</h6>
-                  <button className="text-3xl font-semibold cursor-pointer">
+                  <div className="flex flex-row w-18 overflow-hidden">
+                    {uniqueYears.map((year) => {
+                      return (
+                        <div key={year} className="unique-year">
+                          <h6 className="font-sans font-normal">{year}</h6>
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <button
+                    onClick={handleNextYear}
+                    disabled={isAtEnd}
+                    className="next-year-btn text-3xl font-semibold cursor-pointer"
+                  >
                     {">"}
                   </button>
                 </div>
-
                 <ul className="blog-list-date flex flex-col gap-5">
-                  {blogs.map((blog, index) => {
-                    return (
-                      <li key={index} className="list-content">
-                        <div className="blog-month border-b border-b-gray-300 cursor-pointer">
-                          <p
-                            className="text-center text-base font-semibold "
-                            onClick={handleClickBlogMonth}
-                          >
-                            June
-                          </p>
-                        </div>
-
-                        <div className="blog-entries w-full flex flex-col p-3 overflow-hidden">
-                          <ul className="flex flex-col gap-3 ">
-                            <li
-                              onMouseEnter={handleMouseEnterBlogDate}
-                              onMouseLeave={handleMouseLeaveBlogDate}
-                              className="text-sm text-center cursor-pointer"
+                  <li className="list-content">
+                    {monthEntryPerYear.letterFormat.map((month, index) => {
+                      return (
+                        <div key={index} className="blog-wrapper">
+                          <div className="blog-month border-b border-b-gray-300 cursor-pointer">
+                            <p
+                              className="text-center text-base font-semibold "
+                              onClick={handleClickBlogMonth}
                             >
-                              {blog.title}
-                            </li>
-                            <li className="text-sm text-center">06-20</li>
-                            <li className="text-sm text-center">06-21</li>
-                            <li className="text-sm text-center">06-24</li>
-                          </ul>
+                              {month}
+                            </p>
+                          </div>
+                          <div className="blog-entries w-full flex flex-col p-3 overflow-hidden">
+                            <ul className="flex flex-col gap-3 bg-green ">
+                              {filteredMonthlyBlogs[index].map((blogEntry) => {
+                                return (
+                                  <li
+                                    key={blogEntry.id}
+                                    onMouseEnter={handleMouseEnterBlogDate}
+                                    onMouseLeave={handleMouseLeaveBlogDate}
+                                    className="text-sm text-center cursor-pointer"
+                                  >
+                                    {blogEntry.title}
+                                  </li>
+                                );
+                              })}
+                            </ul>
+                          </div>
                         </div>
-                      </li>
-                    );
-                  })}
+                      );
+                    })}
+                  </li>
                 </ul>
               </div>
             </div>
