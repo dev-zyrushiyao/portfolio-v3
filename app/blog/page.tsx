@@ -37,6 +37,7 @@ export default function Blog() {
   //filter the blog using uniqueYears(number format) and current Index
   //current index change it re-filter the blogs according to the year
   //sample data 2025 = [{blog} , {blog}]
+  //sample data 2026 = [{blog} , {blog} , {blog}]
   const selectedYear = uniqueYears[currentIndex];
   const filteredYearBlogs = blogs.filter(
     (blog) => new Date(blog.created_at).getFullYear() === selectedYear,
@@ -64,6 +65,7 @@ export default function Blog() {
     ),
   };
 
+  //Approach is parallel index alignment
   //e sample value = 11 , 1 (Nov , January)
   //blogs filtered if a blog month entries is equal to e value returns an array
   //.map returns an array of filtered array of blog entries
@@ -71,9 +73,11 @@ export default function Blog() {
   //filteredMonthlyBlogs returns 2-D Array [[]]
   //loop map monthEntryPerYear in JSX then access the filteredMonthlyBlogs by the map index then use map filteredBlog to access its properties
   const filteredMonthlyBlogs = monthEntryPerYear.numberFormat.map((e) => {
-    return filteredYearBlogs.filter((fblog) => {
-      return new Date(fblog.created_at).getMonth() + 1 === e;
-    });
+    return filteredYearBlogs
+      .filter((fblog) => {
+        return new Date(fblog.created_at).getMonth() + 1 === e;
+      })
+      .reverse();
   });
 
   //separating blog per month logic
@@ -82,6 +86,12 @@ export default function Blog() {
   //   console.log(filteredMonthlyBlogs[index]); <-Loop to access its properties
   //   console.log("---------");
   // });
+
+  const monthlyBlogGroups = monthEntryPerYear.letterFormat.map(
+    (monthName, index) => {
+      return { month: monthName, entries: filteredMonthlyBlogs[index] };
+    },
+  );
 
   //animation
   const container = useRef<HTMLDivElement>(null);
@@ -243,20 +253,20 @@ export default function Blog() {
                 </div>
                 <ul className="blog-list-date flex flex-col gap-5">
                   <li className="list-content">
-                    {monthEntryPerYear.letterFormat.map((month, index) => {
+                    {monthlyBlogGroups.map((group) => {
                       return (
-                        <div key={index} className="blog-wrapper">
+                        <div key={group.month} className="blog-wrapper">
                           <div className="blog-month border-b border-b-gray-300 cursor-pointer">
                             <p
                               className="text-center text-base font-semibold "
                               onClick={handleClickBlogMonth}
                             >
-                              {month}
+                              {group.month}
                             </p>
                           </div>
                           <div className="blog-entries w-full flex flex-col p-3 overflow-hidden">
                             <ul className="flex flex-col gap-3 bg-green ">
-                              {filteredMonthlyBlogs[index].map((blogEntry) => {
+                              {group.entries.map((blogEntry) => {
                                 return (
                                   <li
                                     key={blogEntry.id}
