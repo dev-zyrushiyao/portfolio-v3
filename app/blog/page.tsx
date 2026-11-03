@@ -1,23 +1,34 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import MiniBanner from "../components/ui/MiniBanner";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import color from "../design-system/DesignSystem";
 import { BlogProp, getAllBlogs } from "../services/blog";
+import BlogContent from "../components/ui/BlogContent";
+import { formattDate } from "../services/utils";
+import BlogCard from "../components/ui/BlogCard";
 
 const defaultBannerBg: string = "#A7E074";
 const defaultLabel: string = "Blog";
 
 export default function Blog() {
-  const [blogs, setBlogs] = React.useState<BlogProp[]>([]);
+  const [blogs, setBlogs] = useState<BlogProp[]>([]);
+  const [selectedBlog, setSelectedBlog] = useState<BlogProp | null>(null);
+  const [randomizeBlogs, setRandomizeBlogs] = useState<BlogProp[]>([]);
 
   useEffect(() => {
     async function fetchBlogs() {
       const res = await getAllBlogs();
       setBlogs(res);
+      setSelectedBlog(res[0] || null);
+
+      //shuffled and get 5 items
+      const shuffled = [...res].sort(() => Math.random() - 0.5).slice(0, 5);
+      setRandomizeBlogs(shuffled);
     }
+
     fetchBlogs();
   }, []);
 
@@ -65,7 +76,6 @@ export default function Blog() {
     ),
   };
 
-  //Approach is parallel index alignment
   //e sample value = 11 , 1 (Nov , January)
   //blogs filtered if a blog month entries is equal to e value returns an array
   //.map returns an array of filtered array of blog entries
@@ -73,11 +83,10 @@ export default function Blog() {
   //filteredMonthlyBlogs returns 2-D Array [[]]
   //loop map monthEntryPerYear in JSX then access the filteredMonthlyBlogs by the map index then use map filteredBlog to access its properties
   const filteredMonthlyBlogs = monthEntryPerYear.numberFormat.map((e) => {
-    return filteredYearBlogs
-      .filter((fblog) => {
-        return new Date(fblog.created_at).getMonth() + 1 === e;
-      })
-      .reverse();
+    return filteredYearBlogs.filter((fblog) => {
+      return new Date(fblog.created_at).getMonth() + 1 === e;
+    });
+    // .reverse();
   });
 
   //separating blog per month logic
@@ -87,6 +96,7 @@ export default function Blog() {
   //   console.log("---------");
   // });
 
+  //Approach is parallel index alignment
   const monthlyBlogGroups = monthEntryPerYear.letterFormat.map(
     (monthName, index) => {
       return { month: monthName, entries: filteredMonthlyBlogs[index] };
@@ -215,6 +225,31 @@ export default function Blog() {
     context();
   }
 
+  function handleClickBlog(blog: BlogProp) {
+    setSelectedBlog(blog);
+  }
+
+  if (blogs.length === 0) {
+    return (
+      <div>
+        <MiniBanner
+          backgroundColorProp={defaultBannerBg}
+          label={defaultLabel}
+        />
+        <main>
+          <div className="content flex flex-col gap-10 lg:p-20 p-10">
+            <div className="border-b border-gray-400 relative">
+              <h3>Dev Blog</h3>
+            </div>
+            <div className="h-100 flex flex-col justify-center items-center">
+              <h5 className="text-gray-400">No Blogs found...</h5>
+            </div>
+          </div>
+        </main>
+      </div>
+    );
+  }
+
   return (
     <div>
       <MiniBanner backgroundColorProp={defaultBannerBg} label={defaultLabel} />
@@ -223,9 +258,14 @@ export default function Blog() {
           <div className="border-b border-gray-400 relative">
             <h3>Dev Blog</h3>
           </div>
-          <div className="wrapper  flex flex-col lg:flex-row gap-10">
-            <div className="blog-list h-fit border-2 border-gray-300 bg-gray-200 rounded-2xl p-5">
-              <div ref={container} className="blog-wrapper w-50 opacity-0">
+
+          {/* Blog section */}
+          <div className="wrapper flex flex-col lg:flex-row gap-10">
+            <div className="blog-list h-fit border-2 border-gray-300 bg-gray-200 rounded-2xl p-5 hidden lg:block">
+              <div
+                ref={container}
+                className="blog-wrapper lg:w-50 w-full opacity-0"
+              >
                 <div className="blog-year flex flex-row h-20 w-full gap-3 justify-center items-center">
                   <button
                     onClick={handlePrevYear}
@@ -234,7 +274,7 @@ export default function Blog() {
                   >
                     {"<"}
                   </button>
-                  <div className="flex flex-row w-18 overflow-hidden">
+                  <div className="flex flex-row lg:w-18 w-14 overflow-hidden">
                     {uniqueYears.map((year) => {
                       return (
                         <div key={year} className="unique-year">
@@ -251,30 +291,33 @@ export default function Blog() {
                     {">"}
                   </button>
                 </div>
-                <ul className="blog-list-date flex flex-col gap-5">
+                <ul className="blog-list-date flex flex-col gap-5  ">
                   <li className="list-content">
-                    {monthlyBlogGroups.map((group) => {
+                    {monthlyBlogGroups.map((blogPost) => {
                       return (
-                        <div key={group.month} className="blog-wrapper">
+                        <div key={blogPost.month} className="blog-wrapper">
                           <div className="blog-month border-b border-b-gray-300 cursor-pointer">
                             <p
                               className="text-center text-base font-semibold "
                               onClick={handleClickBlogMonth}
                             >
-                              {group.month}
+                              {blogPost.month}
                             </p>
                           </div>
                           <div className="blog-entries w-full flex flex-col p-3 overflow-hidden">
                             <ul className="flex flex-col gap-3 bg-green ">
-                              {group.entries.map((blogEntry) => {
+                              {blogPost.entries.map((blog) => {
                                 return (
                                   <li
-                                    key={blogEntry.id}
+                                    onClick={() => {
+                                      handleClickBlog(blog);
+                                    }}
+                                    key={blog.id}
                                     onMouseEnter={handleMouseEnterBlogDate}
                                     onMouseLeave={handleMouseLeaveBlogDate}
                                     className="text-sm text-center cursor-pointer"
                                   >
-                                    {blogEntry.title}
+                                    {blog.title}
                                   </li>
                                 );
                               })}
@@ -287,72 +330,26 @@ export default function Blog() {
                 </ul>
               </div>
             </div>
-            <div className="content-wrapper bg-amber-100 w-full h-500 p-20 flex flex-col gap-10">
-              <div className="content-title flex flex-row justify-between items-end">
-                <h2>MY TITLE</h2>
-                <p>Date: Jan 1 , 2026</p>
-              </div>
-              <p className="content-details">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex
-                dolore, optio recusandae dicta consequatur dolorem numquam ullam
-                magnam sit ea incidunt quas ut labore voluptatibus atque
-                excepturi, dignissimos nostrum? Magni. Lorem ipsum dolor sit
-                amet consectetur adipisicing elit. Dolorem libero officiis
-                assumenda eaque sint labore eos, numquam vel unde veniam? Lorem
-                ipsum dolor sit, amet consectetur adipisicing elit. Soluta alias
-                iste, numquam, ullam explicabo qui deserunt velit sunt provident
-                ipsa dolores. Ex accusantium reiciendis voluptatum et
-                consequuntur dignissimos laborum commodi! Vel qui est quisquam,
-                nisi similique aliquid velit sit, natus tempore, vero ratione
-                minus illo amet odio necessitatibus dolor eligendi! Est adipisci
-                minus, repudiandae id debitis voluptates sint iusto suscipit!
-                Provident iure voluptatum dolor. Minima quam aliquid
-                praesentium, fuga unde reiciendis quia quibusdam aperiam,
-                ducimus voluptatibus explicabo veniam quis deleniti labore
-                laboriosam repellendus rem facilis natus neque provident, quos
-                similique! Repudiandae vitae, reprehenderit amet ipsum
-                consectetur tempora fuga maiores hic ex deleniti sint
-                temporibus. Vero possimus tenetur libero excepturi rerum eveniet
-                praesentium vel ab odio rem minima iusto, beatae non! Magni
-                rerum vel id nostrum. Facere, assumenda fugiat modi explicabo
-                nisi deleniti odit veritatis rem suscipit natus labore! Aliquam
-                nulla autem atque excepturi a officia? Provident impedit dolore
-                voluptates error! Vel, quibusdam. Amet earum ullam quis tempore
-                repellendus reiciendis suscipit illo quidem facere quos aut quam
-                ipsa necessitatibus, libero laudantium tenetur dolorem ducimus.
-                Accusamus voluptatum officiis, aut eum ex fugit. Fuga amet
-                numquam nesciunt sunt. Consectetur ab eligendi facere, odit ex
-                rem ullam, modi possimus quam enim quod. Iure, ea. Quaerat
-                quidem aspernatur consequatur repellat laboriosam cum,
-                consectetur corporis pariatur. Sint autem non suscipit
-                dignissimos repellendus eius facilis consectetur quos recusandae
-                sapiente ullam inventore excepturi iusto enim, odit numquam
-                blanditiis ipsum fugit maxime! Nobis earum consequatur vel nemo
-                consequuntur repellendus. Corporis, possimus molestiae dolores,
-                debitis est explicabo deserunt commodi non culpa rem aut
-                eligendi magni harum ut optio aliquam provident nobis. Saepe
-                obcaecati aliquam cumque qui quisquam iusto, ea consectetur.
-                Voluptates quos laborum in sint dolore cupiditate assumenda sed
-                quae labore ipsum minus ipsa harum, molestias eligendi deleniti
-                voluptatem cumque eveniet dolorum officiis sit odit error
-                voluptatum dicta aliquid. Minima! Eos, quo? Veritatis vitae
-              </p>
-              <div className="bg-gray-400 h-100 w-full"></div>
-              <p>
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Vel,
-                reiciendis enim modi aliquam culpa reprehenderit facere amet
-                officiis dignissimos voluptate doloremque et provident natus
-                ratione quibusdam aliquid maiores corporis sunt quo impedit
-                aperiam repellat tempore quasi fuga! Similique quos optio
-                voluptatum expedita debitis enim fugit voluptatem atque omnis
-                culpa repellendus numquam accusantium dolorum minus asperiores
-                tempore, eligendi aut? Porro exercitationem totam, ab assumenda
-                dolor commodi aperiam quisquam, laborum placeat velit veritatis
-                explicabo modi non quia. Quas eligendi repellat quasi eos dolor
-                sapiente eaque, facilis error. Corrupti aliquid pariatur
-                assumenda ad dolores, ducimus reiciendis facere illum eligendi
-                voluptatem dicta beatae ea?
-              </p>
+            <div className="blog-content w-full h-auto">
+              {selectedBlog && <BlogContent blogPost={selectedBlog} />}
+            </div>
+          </div>
+
+          {/* other blogs */}
+          <div className="flex flex-col gap-3">
+            <h6>Other blogs:</h6>
+            <div
+              className={`blog-cards flex flex-row gap-5 ${randomizeBlogs.length !== 0 && "overflow-x-scroll"} py-5`}
+            >
+              {randomizeBlogs.map((rblog) => {
+                return (
+                  <BlogCard
+                    key={rblog.id}
+                    onClick={() => handleClickBlog(rblog)}
+                    randomizeBlog={rblog}
+                  />
+                );
+              })}
             </div>
           </div>
         </div>

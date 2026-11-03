@@ -1,6 +1,6 @@
 // "use cache";
 // "use server";
-import supabase from "./supabase";
+import supabase from "./supabase/supabase";
 
 export type CategoryProp = { id: number; category_type: string };
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;

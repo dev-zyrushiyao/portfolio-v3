@@ -3,7 +3,7 @@ export interface BlogProp {
   title: string;
   context: string;
   slug: string;
-  except: string;
+  excerpt: string;
   created_at: string;
   updated_at: string;
   user_id: string;
@@ -29,5 +29,5 @@ export async function getAllBlogs() {
   }
 
   const data = await res.json();
-  return data as BlogProp[];
+  return (data || []) as BlogProp[];
 }

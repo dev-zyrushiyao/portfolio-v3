@@ -13,6 +13,7 @@ import color from "@/app/design-system/DesignSystem";
 type NavLink = { title: string; link: string };
 
 const navMenu: NavLink[] = [
+  { title: "Home", link: "/" },
   { title: "Projects", link: "/projects" },
   { title: "Files", link: "/files" },
   { title: "Blog", link: "/blog" },
