@@ -32,10 +32,7 @@ export default function Projects() {
       setProjects(data);
       setIsLoading(false);
     }
-    // async function addData() {
-    //   const data = await addInitData();
-    // }
-    // addData();
+
     loadData();
   }, []);
 
@@ -68,10 +65,32 @@ export default function Projects() {
             <div className="border-b border-gray-400 relative">
               <h3>Personal Projects</h3>
             </div>
-            <div className="wrapper lg:flex-row flex flex-col items-center flex-wrap gap-10">
+            <div className="wrapper lg:flex-row flex flex-col justify-center items-center flex-wrap gap-10">
               {Array.from({ length: 4 }, (_, index) => {
                 return <LoadingProjectCard key={index} />;
               })}
+            </div>
+          </div>
+        </main>
+      </div>
+    );
+  }
+
+  // no project state
+  if (projects.length === 0) {
+    return (
+      <div>
+        <MiniBanner
+          backgroundColorProp={defaultBannerBg}
+          label={defaultLabel}
+        />
+        <main>
+          <div className="content flex flex-col gap-10 lg:p-20 p-10">
+            <div className="border-b border-gray-400 relative">
+              <h3>Personal Projects</h3>
+            </div>
+            <div className="h-100 flex flex-col justify-center items-center">
+              <h5 className="text-gray-400">No projects found...</h5>
             </div>
           </div>
         </main>
@@ -90,7 +109,7 @@ export default function Projects() {
 
           <div
             ref={container}
-            className="wrapper lg:flex-row flex flex-col items-center flex-wrap gap-10"
+            className="wrapper lg:flex-row flex flex-col justify-center items-center flex-wrap gap-10"
           >
             {!projects.length && <p>No data to display...</p>}
 

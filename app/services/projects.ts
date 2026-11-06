@@ -1,11 +1,11 @@
-import supabase from "./supabase/supabase";
+
 
 export interface ProjectProp {
   readonly id?: string;
   readonly title: string;
   readonly description_desktop: string;
   readonly description_mobile: string;
-  readonly image_url: string;
+  readonly image_url: string | null;
   readonly demo_url: string;
   readonly documentation_url: string;
   readonly prototype_url: string;

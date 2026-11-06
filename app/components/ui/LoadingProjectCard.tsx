@@ -56,7 +56,7 @@ export default function LoadingProjectCard() {
 
   return (
     <div ref={container} className="opacity-0">
-      <div className="project-card lg:h-150 lg:w-100 border rounded-2xl border-gray-400 p-10 flex flex-col gap-5 bg-gray-400">
+      <div className="project-card lg:h-150 w-100 border rounded-2xl border-gray-400 p-10 flex flex-col gap-5 bg-gray-400">
         <div className="image-wrapper rounded-xl overflow-hidden h-50 w-full bg-gray-300 border border-gray-300 relative">
           <div className="w-full h-full bg-gray-300 flex flex-col justify-center items-center select-none">
             <h5 className="loading-text">Loading</h5>

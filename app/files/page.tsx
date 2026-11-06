@@ -14,7 +14,7 @@ export default function page() {
             <h3>Downloadable files</h3>
           </div>
           <section className="section-resume">
-            <h5>Personal files</h5>
+            <h5>Personal</h5>
             <div className="card-wrapper flex flex-row gap-5 flex-wrap">
               <div className="file-card border  border-gray-300 rounded-sm bg-gray-100 min-w-65 max-w-80 flex flex-col items-center p-5">
                 <div className="file-image h-50 w-full bg-gray-700"></div>
@@ -39,7 +39,7 @@ export default function page() {
             </div>
           </section>
           <section className="section-portfolio-assets">
-            <h5>Portfolio SVG Assets</h5>
+            <h5>Portfolio Assets</h5>
             <div className="card-wrapper flex flex-row gap-5 flex-wrap">
               <div className="file-card border  border-gray-300 rounded-sm bg-gray-100 min-w-65 max-w-80 flex flex-col items-center p-5">
                 <div className="file-image h-50 w-full bg-gray-700"></div>

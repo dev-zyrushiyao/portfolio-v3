@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import PrimaryButton from "./PrimaryButton";
 import SecondaryButton from "./SecondaryButton";
+import defaultImage from "@/public/default_img.png";
 
 interface ProjectModalProp {
   selectedProject: ProjectProp;
@@ -22,7 +23,11 @@ export default function ProjectModal({ selectedProject }: ProjectModalProp) {
       <div className="wrapper">
         <div className="image-wrapper rounded-xl lg:h-[40vh] h-[20vh] w-full bg-pink-200 border border-gray-300 overflow-hidden relative">
           <Image
-            src={selectedProject.image_url}
+            src={
+              !selectedProject.image_url
+                ? defaultImage
+                : selectedProject.image_url
+            }
             alt="frontend project"
             fill
             sizes="(max-width: 768px) 100vw, 50vw"
@@ -51,7 +56,7 @@ export default function ProjectModal({ selectedProject }: ProjectModalProp) {
               {selectedProject.tags.map((tag) => {
                 console.log("tag", tag);
                 return (
-                  <li key={tag.icon_url}>
+                  <li key={tag.icon_url} className="relative">
                     <Image
                       src={tag.icon_url}
                       alt={tag.name}

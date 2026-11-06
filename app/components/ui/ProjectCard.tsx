@@ -4,6 +4,7 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import color from "../../design-system/DesignSystem";
 import Image from "next/image";
+import defaultImage from "@/public/default_img.png";
 
 interface ProjectCardProp {
   project: ProjectProp;
@@ -39,12 +40,12 @@ export default function ProjectCard({ project, onClick }: ProjectCardProp) {
   return (
     <div ref={container}>
       <div
-        className="project-card lg:h-150 lg:w-100 border rounded-2xl bg-gray-100 border-gray-400 p-10 flex flex-col gap-5 cursor-pointer"
+        className="project-card lg:h-150  w-100 border rounded-2xl bg-[#f3f4f6] border-gray-400 p-10 flex flex-col gap-5 cursor-pointer"
         onClick={onClick}
       >
         <div className="image-wrapper rounded-xl overflow-hidden h-50 w-full  bg-gray-300 border border-gray-300 relative">
           <Image
-            src={project.image_url}
+            src={!project.image_url ? defaultImage : project.image_url}
             alt="frontend project"
             sizes="(max-width: 768px) 100vw, 50vw"
             fill
