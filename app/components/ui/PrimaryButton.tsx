@@ -29,24 +29,19 @@ export default function PrimaryButton({
 
       gsap.set(expandingCircle, { scale: 0 });
 
-      const hoverIn = gsap.to(expandingCircle, {
+      const hover = gsap.to(expandingCircle, {
         paused: true,
         scale: 1,
-        ease: "circ",
-      });
-
-      const hoverOut = gsap.to(expandingCircle, {
-        paused: true,
-        scale: 0,
-        ease: "circ",
+        ease: "linear",
+        duration: 0.2,
       });
 
       button.addEventListener("mouseenter", () => {
-        hoverIn.restart();
+        hover.play();
       });
 
       button.addEventListener("mouseleave", () => {
-        hoverOut.restart();
+        hover.reverse();
       });
     },
     { scope: container },

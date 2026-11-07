@@ -8,6 +8,7 @@ import BlogContent from "../components/ui/BlogContent";
 
 import BlogCard from "../components/ui/BlogCard";
 import BlogList from "../components/ui/BlogList";
+import LoadingComp from "../components/ui/LoadingComp";
 
 const defaultBannerBg: string = "#A7E074";
 const defaultLabel: string = "Blog";
@@ -28,10 +29,14 @@ export default function Blog() {
       const shuffled = [...res].sort(() => Math.random() - 0.5).slice(0, 5);
       setRandomizeBlogs(shuffled);
 
-      setLoading(false);
+      //waiting time 0.7s
+      new Promise(() => {
+        setTimeout(() => {
+          setLoading(false);
+        }, 700);
+      });
     }
 
-    console.log("test");
     fetchBlogs();
   }, []);
 
@@ -51,30 +56,7 @@ export default function Blog() {
             <div className="border-b border-gray-400 relative">
               <h3>Dev Blog</h3>
             </div>
-            <div className="h-100 flex flex-col justify-center items-center">
-              <h5 className="text-gray-400">Loading...</h5>
-            </div>
-          </div>
-        </main>
-      </div>
-    );
-  }
-
-  if (blogs.length === 0) {
-    return (
-      <div>
-        <MiniBanner
-          backgroundColorProp={defaultBannerBg}
-          label={defaultLabel}
-        />
-        <main>
-          <div className="content flex flex-col gap-10 lg:p-20 p-10">
-            <div className="border-b border-gray-400 relative">
-              <h3>Dev Blog</h3>
-            </div>
-            <div className="h-100 flex flex-col justify-center items-center">
-              <h5 className="text-gray-400">No Blogs found...</h5>
-            </div>
+            <LoadingComp />
           </div>
         </main>
       </div>
@@ -90,32 +72,38 @@ export default function Blog() {
             <h3>Dev Blog</h3>
           </div>
 
-          {/* Blog section */}
-          <div className="wrapper flex flex-col lg:flex-row gap-10">
-            <BlogList blogs={blogs} setSelectedBlog={setSelectedBlog} />
-
-            <div className="blog-content w-full h-auto">
-              {selectedBlog && <BlogContent blogPost={selectedBlog} />}
+          {blogs.length === 0 ? (
+            <div className="h-100 flex flex-col justify-center items-center">
+              <h5 className="text-gray-400">No Blogs found...</h5>
             </div>
-          </div>
-
-          {/* other blogs */}
-          <div className="flex flex-col gap-3">
-            <h6>Other blogs:</h6>
-            <div
-              className={`blog-cards flex flex-row gap-5 ${randomizeBlogs.length !== 0 && "overflow-x-scroll"} py-5`}
-            >
-              {randomizeBlogs.map((rblog) => {
-                return (
-                  <BlogCard
-                    key={rblog.id}
-                    onClick={() => handleClickBlog(rblog)}
-                    randomizeBlog={rblog}
-                  />
-                );
-              })}
+          ) : (
+            <div className="wrapper">
+              {/* Blog section */}
+              <div className="wrapper flex flex-col lg:flex-row gap-10">
+                <BlogList blogs={blogs} setSelectedBlog={setSelectedBlog} />
+                <div className="blog-content w-full h-auto">
+                  {selectedBlog && <BlogContent blogPost={selectedBlog} />}
+                </div>
+              </div>
+              {/* other blogs */}
+              <div className="flex flex-col gap-3">
+                <h6>Other blogs:</h6>
+                <div
+                  className={`blog-cards flex flex-row gap-5 ${randomizeBlogs.length !== 0 && "overflow-x-scroll"} py-5`}
+                >
+                  {randomizeBlogs.map((rblog) => {
+                    return (
+                      <BlogCard
+                        key={rblog.id}
+                        onClick={() => handleClickBlog(rblog)}
+                        randomizeBlog={rblog}
+                      />
+                    );
+                  })}
+                </div>
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </main>
     </div>

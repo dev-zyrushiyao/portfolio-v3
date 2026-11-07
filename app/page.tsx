@@ -264,7 +264,11 @@ export default function Home() {
           <div className="other-wrapper flex flex-row justify-around z-0">
             {otherLinks.map((element) => {
               return (
-                <Link key={element.title} href={element.link}>
+                <Link
+                  key={element.title}
+                  href={element.link}
+                  className="text-black"
+                >
                   <div className="other-section h-[clamp(200px,20vw,50vw)] w-[clamp(200px,20vw,40vw)] flex flex-col justify-center items-center bg-amber-200 relative overflow-clip cursor-pointer">
                     <div className="other-label relative inset-0 z-10 flex flex-col items-center">
                       <div className="other-label-icon h-[clamp(24px,5vw,60px)] w-[clamp(24px,5vw,60px)]">

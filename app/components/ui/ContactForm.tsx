@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useActionState, useEffect, useState } from "react";
+import React, { useState } from "react";
 import PrimaryButton from "./PrimaryButton";
 import { CategoryProp } from "../../services/category";
 import { submitContact } from "../../services/contact";

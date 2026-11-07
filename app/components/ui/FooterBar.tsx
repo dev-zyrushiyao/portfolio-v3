@@ -56,7 +56,9 @@ export default function FooterBar() {
               {elem.content.map((cont) => {
                 return (
                   <li key={cont.title}>
-                    <a href={cont.link}>{cont.title}</a>
+                    <a href={cont.link} className="text-white">
+                      {cont.title}
+                    </a>
                   </li>
                 );
               })}

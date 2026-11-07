@@ -19,12 +19,7 @@ export default function BlogCard({ randomizeBlog, onClick }: BlogCardProp) {
       </h5>
       <p className="text-sm">{formattDate(randomizeBlog.created_at)}</p>
       <p>{"------------------"}</p>
-      <p className="text-base line-clamp-5">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam tenetur,
-        minima nostrum accusamus vero nobis, tempora placeat reprehenderit cum
-        quam enim, laudantium maxime excepturi reiciendis in ex qui ea
-        aspernatur?
-      </p>
+      <p className="text-base line-clamp-5">{randomizeBlog.excerpt}</p>
     </div>
   );
 }

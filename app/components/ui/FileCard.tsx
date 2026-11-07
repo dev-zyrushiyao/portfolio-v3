@@ -8,6 +8,8 @@ interface FileCardProp {
   file: FileProp;
 }
 
+const allowedType: string[] = ["jpeg", "png", "svg+xml"];
+
 export default function FileCard({ file }: FileCardProp) {
   function handleDownload(file: FileProp) {
     // 1. Create a Blob with the data and data type
@@ -35,20 +37,24 @@ export default function FileCard({ file }: FileCardProp) {
   return (
     <div
       key={file.id}
-      className="file-card border border-gray-300 rounded-lg bg-gray-100 min-w-65 max-w-80 w-100 flex flex-col items-center p-5 z-0"
+      className="file-card border border-gray-300 rounded-lg bg-gray-100  w-80 flex flex-col items-center p-5 z-0"
     >
       <div className="file-image h-50 w-full bg-gray-300 rounded-sm relative">
         <Image
-          src={file.link === null ? defaultImage : file.link}
+          src={allowedType.includes(file.type) ? file.link : defaultImage}
           alt="file photo"
           fill
           loading="eager"
-          className="object-contain p-10"
+          className="object-cover"
         />
       </div>
       <div className="h-50 w-full flex flex-col justify-evenly">
         <div>
-          <h5>{file.title}</h5>
+          <h6 title={file.title}>
+            {file.title.length > 12
+              ? file.title.slice(0, 12) + ".."
+              : file.title}
+          </h6>
           <p>Filetype: {file.type}</p>
         </div>
 

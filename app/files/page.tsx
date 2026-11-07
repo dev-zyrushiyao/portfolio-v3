@@ -7,6 +7,7 @@ import { FileProp, getFiles } from "../services/file";
 import Image from "next/image";
 import defaultImage from "@/public/default_img.png";
 import FileCard from "../components/ui/FileCard";
+import LoadingComp from "../components/ui/LoadingComp";
 
 const defaultBannerBg: string = "#E2F0D9";
 const defaultLabel: string = "Files";
@@ -18,7 +19,13 @@ export default function FilesPage() {
     async function fetchFiles() {
       const data = await getFiles();
       setFiles(data);
-      setLoading(false);
+
+      //waiting time 0.7s
+      new Promise(() => {
+        setTimeout(() => {
+          setLoading(false);
+        }, 700);
+      });
     }
 
     fetchFiles();
@@ -37,9 +44,7 @@ export default function FilesPage() {
               <h3>Downloadable files</h3>
             </div>
           </div>
-          <div className="h-100 w-full flex flex-col justify-center items-center">
-            <h6>Loading....</h6>
-          </div>
+          <LoadingComp />
         </main>
       </div>
     );

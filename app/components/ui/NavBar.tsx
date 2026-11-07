@@ -154,7 +154,7 @@ export default function NavBar() {
                   className="w-30 text-center relative cursor-pointer"
                 >
                   <div className="flex flex-col gap-2">
-                    <Link href={menu.link}>
+                    <Link href={menu.link} className="text-white">
                       {menu.title}
                       <div className="nav-line absolute top-7 bottom-0 inset-x-0 h-full w-full">
                         <LineBottom />
@@ -167,13 +167,15 @@ export default function NavBar() {
           </ul>
         </div>
       </nav>
-      <div>
+      <div className="wrapper">
         <div className="mobile-menu h-dvh w-[30vh] absolute top-20 left-full z-10 lg:invisible block">
           <ul className="h-150 flex flex-col justify-center items-center gap-20">
             {navMenu.map((menu) => {
               return (
                 <li key={menu.title} className="text-white text-2xl">
-                  <Link href={menu.link}>{menu.title}</Link>
+                  <Link href={menu.link} className="text-white">
+                    {menu.title}
+                  </Link>
                 </li>
               );
             })}
