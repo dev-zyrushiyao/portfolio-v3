@@ -1,56 +1,80 @@
-import React from "react";
+"use client";
+
+import React, { useEffect, useState } from "react";
 import MiniBanner from "../components/ui/MiniBanner";
 import PrimaryButton from "../components/ui/PrimaryButton";
+import { FileProp, getFiles } from "../services/file";
+import Image from "next/image";
+import defaultImage from "@/public/default_img.png";
+import FileCard from "../components/ui/FileCard";
 
 const defaultBannerBg: string = "#E2F0D9";
 const defaultLabel: string = "Files";
-export default function page() {
+export default function FilesPage() {
+  const [files, setFiles] = useState<FileProp[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    async function fetchFiles() {
+      const data = await getFiles();
+      setFiles(data);
+      setLoading(false);
+    }
+
+    fetchFiles();
+  }, []);
+
+  if (loading) {
+    return (
+      <div>
+        <MiniBanner
+          backgroundColorProp={defaultBannerBg}
+          label={defaultLabel}
+        />
+        <main>
+          <div className="content flex flex-col gap-10 lg:p-20 p-10">
+            <div className="border-b border-gray-400 relative">
+              <h3>Downloadable files</h3>
+            </div>
+          </div>
+          <div className="h-100 w-full flex flex-col justify-center items-center">
+            <h6>Loading....</h6>
+          </div>
+        </main>
+      </div>
+    );
+  }
+
+  const personalFiles = files.filter((f) => {
+    return f.category === "Personal";
+  });
+
+  const assetFiles = files.filter((f) => {
+    return f.category === "Asset";
+  });
+
   return (
     <div>
       <MiniBanner backgroundColorProp={defaultBannerBg} label={defaultLabel} />
       <main>
         <div className="content flex flex-col gap-10 lg:p-20 p-10">
-          <div className="border-b border-gray-400 relative">
+          <div className="border-b border-gray-400">
             <h3>Downloadable files</h3>
           </div>
-          <section className="section-resume">
-            <h5>Personal</h5>
+          <section className="section-resume flex flex-col gap-5">
+            <h4>Personal</h4>
             <div className="card-wrapper flex flex-row gap-5 flex-wrap">
-              <div className="file-card border  border-gray-300 rounded-sm bg-gray-100 min-w-65 max-w-80 flex flex-col items-center p-5">
-                <div className="file-image h-50 w-full bg-gray-700"></div>
-                <div className="h-50 w-full flex flex-col justify-around items-center">
-                  <div>
-                    <h5>Resume</h5>
-                    <p>Filetype: SVG</p>
-                  </div>
-                  <PrimaryButton label="Download" type="button" />
-                </div>
-              </div>
-              <div className="file-card border  border-gray-300 rounded-sm bg-gray-100 min-w-65 max-w-80 flex flex-col items-center p-5">
-                <div className="file-image h-50 w-full bg-gray-700"></div>
-                <div className="h-50 w-full flex flex-col justify-around items-center">
-                  <div>
-                    <h5>Portfolio Docs</h5>
-                    <p>Filetype: SVG</p>
-                  </div>
-                  <PrimaryButton label="Download" type="button" />
-                </div>
-              </div>
+              {personalFiles.map((file) => {
+                return <FileCard key={file.id} file={file} />;
+              })}
             </div>
           </section>
-          <section className="section-portfolio-assets">
-            <h5>Portfolio Assets</h5>
+          <section className="section-portfolio-assets flex flex-col gap-5">
+            <h4>Portfolio Assets</h4>
             <div className="card-wrapper flex flex-row gap-5 flex-wrap">
-              <div className="file-card border  border-gray-300 rounded-sm bg-gray-100 min-w-65 max-w-80 flex flex-col items-center p-5">
-                <div className="file-image h-50 w-full bg-gray-700"></div>
-                <div className="h-50 w-full flex flex-col justify-around items-center">
-                  <div>
-                    <h5>Resume</h5>
-                    <p>Filetype: SVG</p>
-                  </div>
-                  <PrimaryButton label="Download" type="button" />
-                </div>
-              </div>
+              {assetFiles.map((file) => {
+                return <FileCard key={file.id} file={file} />;
+              })}
             </div>
           </section>
         </div>

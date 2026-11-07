@@ -12,7 +12,7 @@ import BlogIcon from "./components/svg/BlogIcon";
 import ProjectIcon from "./components/svg/ProjectIcon";
 import DrawSVGPlugin from "gsap/DrawSVGPlugin";
 import color from "./design-system/DesignSystem";
-import FooterBar from "./components/ui/FooterBar";
+
 import Link from "next/link";
 
 type Certificates = { title: string; certificateList: string[] };
@@ -52,6 +52,8 @@ const techStack: string[] = [
   "Tailwind CSS",
   "Figma",
   "Flutter",
+  "Supabase",
+  "NextJs",
 ];
 
 type OtherLinks = { title: string; link: string; icon: JSX.Element };
@@ -280,7 +282,6 @@ export default function Home() {
           </div>
         </div>
       </main>
-
     </div>
   );
 }

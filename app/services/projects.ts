@@ -1,5 +1,3 @@
-
-
 export interface ProjectProp {
   readonly id?: string;
   readonly title: string;
@@ -29,6 +27,7 @@ export async function getProjects(): Promise<ProjectProp[]> {
       headers: {
         "Content-Type": "application/json",
         apikey: supabaseKey as string,
+        Authorization: `Bearer ${supabaseKey}`,
       },
     },
   );

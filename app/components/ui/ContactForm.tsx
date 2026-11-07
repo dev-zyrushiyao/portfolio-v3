@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useActionState } from "react";
+import React, { useActionState, useEffect, useState } from "react";
 import PrimaryButton from "./PrimaryButton";
 import { CategoryProp } from "../../services/category";
 import { submitContact } from "../../services/contact";
@@ -8,22 +8,64 @@ import { submitContact } from "../../services/contact";
 type ContactFormProps = { categoryMenu: CategoryProp[] };
 
 export default function ContactForm({ categoryMenu }: ContactFormProps) {
-  const [state, formAction, isPending] = useActionState(submitContact, null);
+  const [resultMessage, setResultMessage] = useState<string>("");
+  const [isPending, setIsPending] = useState<boolean>(false);
 
-
+  // useEffect(() => {
+  //   setResultMessage("");
+  // }, []);
 
   return (
     <div className=" w-150 flex flex-col items-center">
       <div className="message-wrapper h-10 w-full">
-        {state && (
-          <p
-            className={`font-semibold text-center ${state.success ? "text-green-600" : "text-red-600"}`}
-          >
-            {state.message}
-          </p>
-        )}
+        <p id="submit-result" className={`submit-result font-semibold`}>
+          {resultMessage}
+        </p>
       </div>
-      <form action={formAction} className="w-100 flex flex-col gap-5">
+      <form
+        className="w-100 flex flex-col gap-5"
+        onSubmit={async (e) => {
+          e.preventDefault();
+
+          setIsPending(true);
+
+          const formElem = e.currentTarget;
+          const formData = new FormData(formElem);
+          const result = await submitContact(formData);
+
+          try {
+            const targetElem = document.getElementById("submit-result");
+            if (!targetElem) {
+              throw new Error(
+                "Unable to display result: target element is not found",
+              );
+            }
+
+            if (result?.success) {
+              //target element style
+              targetElem.className = "text-green-600 text-center text-bold";
+              setIsPending(false);
+              setResultMessage(result.message);
+
+              //timer that dissolves the result message from the screen
+              new Promise(() => {
+                setTimeout(() => {
+                  setResultMessage("");
+                }, 1000);
+              });
+
+              formElem.reset();
+            } else {
+              //not success display the false result message
+              targetElem.className = "text-red-600 text-center text-bold";
+              setIsPending(false);
+              setResultMessage(result.message);
+            }
+          } catch (e) {
+            throw new Error(`${e}`);
+          }
+        }}
+      >
         <div className="name-section flex flex-col">
           <label htmlFor="name-input" className="text-base font-semibold">
             Name

@@ -154,10 +154,12 @@ export default function NavBar() {
                   className="w-30 text-center relative cursor-pointer"
                 >
                   <div className="flex flex-col gap-2">
-                    <Link href={menu.link}>{menu.title}</Link>
-                  </div>
-                  <div className="nav-line absolute top-7 bottom-0 inset-x-0 h-full w-full">
-                    <LineBottom />
+                    <Link href={menu.link}>
+                      {menu.title}
+                      <div className="nav-line absolute top-7 bottom-0 inset-x-0 h-full w-full">
+                        <LineBottom />
+                      </div>
+                    </Link>
                   </div>
                 </li>
               );

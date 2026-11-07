@@ -1,12 +1,9 @@
 "use server";
 
-export type FormState = { success: boolean; message: string } | null;
+export type FormState = { success: boolean; message: string };
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
 
-export async function submitContact(
-  prevState: FormState,
-  formData: FormData,
-): Promise<FormState> {
+export async function submitContact(formData: FormData): Promise<FormState> {
   //form data values
   const sender_name = formData.get("sender_name")?.toString().trim();
   const sender_email = formData.get("sender_email")?.toString().trim();
@@ -21,6 +18,7 @@ export async function submitContact(
       headers: {
         "Content-Type": "application/json",
         apikey: supabaseKey as string,
+        Authorization: `Bearer ${supabaseKey}`,
       },
       body: JSON.stringify({
         sender_name,
