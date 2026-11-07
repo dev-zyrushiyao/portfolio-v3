@@ -2,12 +2,14 @@ import React, { Suspense } from "react";
 import MiniBanner from "../components/ui/MiniBanner";
 import { CategoryProp, getCategory } from "../services/category";
 import ContactForm from "../components/ui/ContactForm";
+
 import Loading from "./Loading";
 
 const defaultBannerBg: string = "#FFC5D3";
 const defaultLabel: string = "Contact";
 
 async function CategoryDetails() {
+  
   const categoryMenu: CategoryProp[] = await getCategory();
 
   return <ContactForm categoryMenu={categoryMenu} />;

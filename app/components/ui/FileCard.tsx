@@ -11,27 +11,34 @@ interface FileCardProp {
 const allowedType: string[] = ["jpeg", "png", "svg+xml"];
 
 export default function FileCard({ file }: FileCardProp) {
-  function handleDownload(file: FileProp) {
-    // 1. Create a Blob with the data and data type
-    const blob = new Blob([file.link], {
-      type: file.type,
-    });
+  async function handleDownload(file: FileProp) {
+    try {
+      //source
+      const res = await fetch(file.link);
+      const blob = await res.blob();
 
-    // 2. Generate a unique, temporary URL pointing to the Blob object
-    const url = URL.createObjectURL(blob);
+      //Generate a unique, temporary URL pointing to the Blob object
+      const url = URL.createObjectURL(blob);
 
-    // 3. Create a hidden <a> element
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = `${file.title}.${file.type === "svg+xml" ? "svg" : file.type}`; // Sets the target file name
+      // Safely extract extension (e.g., "application/pdf" -> "pdf")
+      // const ext = file.type.includes("/") ? file.type.split("/")[1] : "file";
+      // link.download = `${file.title}.${ext}`;
 
-    // 4. Temporarily append to DOM and programmatically click it to trigger the download
-    document.body.appendChild(link);
-    link.click();
+      //Create a hidden <a> element
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `${file.title}.${file.type === "svg+xml" ? "svg" : file.type}`; // Sets the target file name
 
-    // 5. Clean up by removing the link and revoking the object URL to free memory
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
+      //Temporarily append to DOM and programmatically click it to trigger the download
+      document.body.appendChild(link);
+      link.click();
+
+      //Clean up by removing the link and revoking the object URL to free memory
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    } catch (e) {
+      console.log(`Error: ${e}`);
+    }
   }
 
   return (
@@ -45,7 +52,7 @@ export default function FileCard({ file }: FileCardProp) {
           alt="file photo"
           fill
           loading="eager"
-          className="object-cover"
+          className="object-scale-down"
         />
       </div>
       <div className="h-50 w-full flex flex-col justify-evenly">

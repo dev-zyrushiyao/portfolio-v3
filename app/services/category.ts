@@ -6,6 +6,8 @@ export type CategoryProp = { id: number; category_type: string };
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
 
 export async function getCategory(): Promise<CategoryProp[] | []> {
+  "use cache";
+
   const res = await fetch(
     `https://ylfbtnwzwdzqsmipjzuv.supabase.co/rest/v1/category`,
     {
