@@ -28,12 +28,12 @@ export default function ProjectModal({ selectedProject }: ProjectModalProp) {
                 ? defaultImage
                 : selectedProject.image_url
             }
-            alt="frontend project"
             fill
+            alt="frontend project"
             sizes="(max-width: 768px) 100vw, 50vw"
             loading="eager"
-            className="object-cover"
-          ></Image>
+            className="z-0"
+          />
         </div>
         <div className="modal-details flex flex-col gap-5 py-5 border-b border-b-black">
           <div className="modal-title flex flex-row border-b border-gray-500">
@@ -54,16 +54,16 @@ export default function ProjectModal({ selectedProject }: ProjectModalProp) {
           <div className="modal-tech-stack flex flex-row gap-2 lg:w-1/2 w-full justify-start items-start ">
             <ul className="flex flex-row flex-wrap text-sm gap-2">
               {selectedProject.tags.map((tag) => {
-                console.log("tag", tag);
                 return (
                   <li key={tag.icon_url} className="relative">
                     <Image
                       src={tag.icon_url}
                       alt={tag.name}
-                      width={24}
                       height={24}
+                      width={24}
                       loading="lazy"
                       title={tag.name}
+                      className="h-auto w-auto"
                     />
                   </li>
                 );

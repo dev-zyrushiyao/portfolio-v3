@@ -4,12 +4,11 @@ import { CategoryProp, getCategory } from "../services/category";
 import ContactForm from "../components/ui/ContactForm";
 
 import Loading from "./Loading";
+import SectionHeader from "../components/ui/SectionHeader";
 
 const defaultBannerBg: string = "#FFC5D3";
-const defaultLabel: string = "Contact";
 
 async function CategoryDetails() {
-  
   const categoryMenu: CategoryProp[] = await getCategory();
 
   return <ContactForm categoryMenu={categoryMenu} />;
@@ -18,12 +17,10 @@ async function CategoryDetails() {
 export default function Contact() {
   return (
     <div>
-      <MiniBanner backgroundColorProp={defaultBannerBg} label={defaultLabel} />
+      <MiniBanner backgroundColorProp={defaultBannerBg} label={"Contact"} />
       <main>
         <div className="content flex flex-col gap-10 lg:p-20 p-10">
-          <div className="border-b border-gray-400 relative">
-            <h3>{defaultLabel}</h3>
-          </div>
+          <SectionHeader label="Contact me" />
           <div className="form-wrapper w-full flex flex-col items-center">
             <Suspense fallback={<Loading />}>
               <CategoryDetails />

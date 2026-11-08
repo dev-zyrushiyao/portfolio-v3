@@ -12,7 +12,7 @@ interface ProjectCardProp {
 }
 
 export default function ProjectCard({ project, onClick }: ProjectCardProp) {
-  const container = useRef<HTMLDivElement>(null);
+  const container = useRef<HTMLDivElement | null>(null);
 
   useGSAP(
     () => {
@@ -38,21 +38,28 @@ export default function ProjectCard({ project, onClick }: ProjectCardProp) {
   );
 
   return (
-    <div ref={container}>
+    <div ref={container} className="">
       <div
-        className="project-card lg:h-150  w-100 border rounded-2xl bg-[#f3f4f6] border-gray-400 p-10 flex flex-col gap-5 cursor-pointer"
+        className="project-card lg:h-150 w-100 border rounded-2xl bg-[#f3f4f6] border-gray-400 p-10 flex flex-col gap-5 cursor-pointer "
         onClick={onClick}
       >
-        <div className="image-wrapper rounded-xl overflow-hidden h-50 w-full  bg-gray-300 border border-gray-300 relative">
+        <div className="image-wrapper rounded-xl overflow-hidden h-50 w-full bg-gray-300 border border-gray-300 relative inset-0">
           <Image
             src={!project.image_url ? defaultImage : project.image_url}
             alt="frontend project"
             sizes="(max-width: 768px) 100vw, 50vw"
+            loading="eager"
             fill
             className="object-cover"
-            loading="eager"
-          ></Image>
+          />
+
+          {/* <img
+            src={!project.image_url ? defaultImage.src : project.image_url}
+            alt="frontend project"
+            className="object-contain h-full w-full overflow-clip"
+          /> */}
         </div>
+
         <div className="project-information flex flex-col gap-5 ">
           <h5 className="project-title wrap-break-word">{project.title}RAT</h5>
           <p className="project-description lg:line-clamp-5 hidden">

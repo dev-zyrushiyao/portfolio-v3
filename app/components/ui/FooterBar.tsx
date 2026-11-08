@@ -33,7 +33,7 @@ const footerElem: FooterElem[] = [
 export default function FooterBar() {
   return (
     <footer
-      className="flex md:flex-row flex-col gap-10 justify-evenly p-10 overflow-clip relative"
+      className="flex md:flex-row flex-col gap-10 justify-evenly p-10 overflow-clip relative z-0"
       style={{
         backgroundColor: `${color.primary}`,
         color: `white`,

@@ -26,22 +26,23 @@ gsap.registerPlugin(DrawSVGPlugin);
 
 export default function NavBar() {
   const container = useRef<HTMLDivElement>(null);
-
   const ulRef = useRef<HTMLUListElement>(null);
+  const hamburgerTlRef = useRef<gsap.core.Timeline | null>(null);
 
   useGSAP(
     () => {
+      //container has relative to prevent the mobileMenu overflowing
       //FUOC
       gsap.set(container.current, { opacity: 1 });
 
-      // set the default color of Nav
-      gsap.set("nav", {
-        backgroundColor: defaultBg,
-        color: defaultFontColor,
-      });
+      const navBar = container.current?.querySelector("nav");
+      if (!navBar) return;
 
-      gsap.set(".mobile-menu", {
-        backgroundColor: "#6A0400",
+      console.log("navbar usegsap triggered");
+
+      // set the default color of Nav
+      gsap.set(navBar, {
+        backgroundColor: defaultBg,
         color: defaultFontColor,
       });
 
@@ -73,18 +74,29 @@ export default function NavBar() {
       );
       if (!hamburgerElem) return;
       const hamburgerPath = hamburgerElem.querySelectorAll(":scope > path");
-      const hamburgerMenu = container.current?.querySelector(".mobile-menu");
-      if (!hamburgerPath || !hamburgerMenu) return;
+      const mobileMenu = container.current?.querySelector(".mobile-menu");
+      const blackCover = container.current?.querySelector(".black-cover");
+      if (!hamburgerPath || !mobileMenu || !blackCover) return;
 
-      //toggle hamburger animation
-      const hamburgerTl = gsap
-        .timeline({ paused: true })
-        .fromTo(hamburgerMenu, { xPercent: 0 }, { xPercent: -100 });
+      gsap.set(mobileMenu, {
+        backgroundColor: "#6A0400",
+        color: defaultFontColor,
+        left: "100%",
+      });
+
+      //toggle hamburger & mobile menu animation
+      hamburgerTlRef.current = gsap.timeline({ paused: true });
+
+      hamburgerTlRef.current
+        .to(mobileMenu, { xPercent: -100 })
+        .fromTo(blackCover, { autoAlpha: 0 }, { autoAlpha: 1 }, "<");
+
+      //additional animation - SVG hamburger
       hamburgerPath.forEach((path, index) => {
         switch (index) {
           case 0:
             {
-              hamburgerTl.to(
+              hamburgerTlRef.current?.to(
                 path,
                 {
                   transformOrigin: "0% 0%",
@@ -95,12 +107,12 @@ export default function NavBar() {
             }
             break;
           case 1:
-            hamburgerTl
-              .to(path, { drawSVG: "50% 50%" }, "<")
+            hamburgerTlRef.current
+              ?.to(path, { drawSVG: "50% 50%" }, "<")
               .to(path, { transformOrigin: "50% 50%", scale: 0 }, "<");
             break;
           case 2: {
-            hamburgerTl.to(
+            hamburgerTlRef.current?.to(
               path,
               {
                 transformOrigin: "0% 0%",
@@ -113,18 +125,22 @@ export default function NavBar() {
       });
 
       hamburgerElem.addEventListener("click", () => {
-        if (hamburgerTl.progress() === 1) {
-          hamburgerTl.reverse();
+        if (hamburgerTlRef.current?.progress() === 1) {
+          hamburgerTlRef.current?.reverse();
         } else {
-          hamburgerTl.play();
+          hamburgerTlRef.current?.play();
         }
       });
     },
     { scope: container },
   );
 
+  function closeMobileMenu(): void {
+    hamburgerTlRef.current?.reverse();
+  }
+
   return (
-    <div ref={container} className="relative overflow-x-clip opacity-0">
+    <div ref={container} className=" overflow-x-clip opacity-0 relative">
       <nav className="h-20 w-full bg-black flex flex-row items-center p-8 border border-gray-500">
         <div className="w-full">
           <div className="logo-wrapper h-fit w-fit ">
@@ -167,14 +183,22 @@ export default function NavBar() {
           </ul>
         </div>
       </nav>
-      <div className="wrapper">
-        <div className="mobile-menu h-dvh w-[30vh] absolute top-20 left-full z-10 lg:invisible block">
-          <ul className="h-150 flex flex-col justify-center items-center gap-20">
+      <div className="nav-mobile-wrap overflow-x-clip">
+        <div
+          className="black-cover bg-black/50 h-dvh w-full fixed opacity-0"
+          onClick={closeMobileMenu}
+        ></div>
+        <div className="mobile-menu h-dvh w-[30vh] absolute top-20 lg:invisible block bg-[#6A0400]">
+          <ul className="h-full flex flex-col justify-start py-40 items-center gap-10">
             {navMenu.map((menu) => {
               return (
-                <li key={menu.title} className="text-white text-2xl">
+                <li
+                  key={menu.title}
+                  className="text-white text-2xl"
+                  onClick={closeMobileMenu}
+                >
                   <Link href={menu.link} className="text-white">
-                    {menu.title}
+                    <h6 className="font-sans font-normal">{menu.title}</h6>
                   </Link>
                 </li>
               );

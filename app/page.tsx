@@ -68,6 +68,8 @@ gsap.registerPlugin(DrawSVGPlugin);
 export default function Home() {
   const container = useRef<HTMLDivElement>(null);
 
+  
+
   useGSAP(
     () => {
       //FOUC

@@ -8,6 +8,7 @@ import Image from "next/image";
 import defaultImage from "@/public/default_img.png";
 import FileCard from "../components/ui/FileCard";
 import LoadingComp from "../components/ui/LoadingComp";
+import SectionHeader from "../components/ui/SectionHeader";
 
 const defaultBannerBg: string = "#E2F0D9";
 const defaultLabel: string = "Files";
@@ -40,9 +41,7 @@ export default function FilesPage() {
         />
         <main>
           <div className="content flex flex-col gap-10 lg:p-20 p-10">
-            <div className="border-b border-gray-400 relative">
-              <h3>Downloadable files</h3>
-            </div>
+            <SectionHeader label="Downloadable Files" />
           </div>
           <LoadingComp />
         </main>
@@ -63,9 +62,7 @@ export default function FilesPage() {
       <MiniBanner backgroundColorProp={defaultBannerBg} label={defaultLabel} />
       <main>
         <div className="content flex flex-col gap-10 lg:p-20 p-10">
-          <div className="border-b border-gray-400">
-            <h3>Downloadable files</h3>
-          </div>
+          <SectionHeader label="Downloadable Files" />
           <section className="section-resume flex flex-col gap-5">
             <h4>Personal</h4>
             <div className="card-wrapper flex flex-row gap-5 flex-wrap">

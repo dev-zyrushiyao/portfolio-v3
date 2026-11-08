@@ -15,27 +15,27 @@
 
 @layer base {
   h1 {
-    @apply lg:text-8xl text-6xl tracking-wide font-serif font-bold;
+    @apply lg:text-8xl md:text-6xl text-4xl tracking-wide font-serif font-bold;
   }
 
   h2 {
-    @apply lg:text-7xl text-5xl tracking-wide font-serif font-semibold;
+    @apply lg:text-7xl md:text-5xl text-3xl tracking-wide font-serif font-semibold;
   }
 
   h3 {
-    @apply lg:text-6xl text-4xl tracking-wide font-serif font-semibold;
+    @apply lg:text-6xl md:text-4xl text-2xl tracking-wide font-serif font-semibold;
   }
 
   h4 {
-    @apply lg:text-5xl text-2xl tracking-wide font-serif font-semibold;
+    @apply lg:text-5xl md:text-4xl text-3xl tracking-wide font-serif font-semibold;
   }
 
   h5 {
-    @apply lg:text-4xl tracking-wide text-2xl font-serif font-semibold;
+    @apply lg:text-4xl text-2xl  tracking-wide font-serif font-semibold;
   }
 
   h6 {
-    @apply lg:text-3xl tracking-wide text-2xl font-serif font-semibold;
+    @apply lg:text-3xl text-2xl tracking-wide  font-serif font-semibold;
   }
 
   p {

@@ -49,6 +49,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <div className="sticky top-0 z-10">
           <NavBar />
         </div>
+
         {children}
         <FooterBar />
       </body>
