@@ -13,7 +13,7 @@ export default function ProjectIcon() {
       //     enableBackground: "new 0 0 128 128",
       //   }}
       xmlSpace="preserve"
-      fill="none"
+      fill="black"
       stroke="black"
     >
       <g>

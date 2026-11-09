@@ -46,7 +46,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${lora.variable} ${googleSansFlex.variable} ${notoSansTagalog.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <div className="sticky top-0 z-10">
+        <div className="sticky top-0 z-30">
           <NavBar />
         </div>
 

@@ -9,7 +9,7 @@ export default function MiniBanner({
 }) {
   return (
     <div
-      className={`h-[25vw] flex flex-col justify-center items-center`}
+      className={`h-[25vw] w-full flex flex-col justify-center items-center`}
       style={{ backgroundColor: backgroundColorProp }}
     >
       <h2>{label}</h2>

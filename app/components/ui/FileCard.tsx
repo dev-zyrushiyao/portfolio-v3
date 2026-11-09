@@ -44,15 +44,16 @@ export default function FileCard({ file }: FileCardProp) {
   return (
     <div
       key={file.id}
-      className="file-card border border-gray-300 rounded-lg bg-gray-100  w-80 flex flex-col items-center p-5 z-0"
+      className="file-card border border-gray-300 rounded-lg bg-gray-100 lg:w-100 w-80 flex flex-col items-center p-5 z-0"
     >
       <div className="file-image h-50 w-full bg-gray-300 rounded-sm relative">
         <Image
           src={allowedType.includes(file.type) ? file.link : defaultImage}
           alt="file photo"
+          sizes="(max-width: 768px) 100vw, 300px"
           fill
           loading="eager"
-          className="object-scale-down"
+          className="object-scale-down h-auto w-auto"
         />
       </div>
       <div className="h-50 w-full flex flex-col justify-evenly">

@@ -1,5 +1,6 @@
 import color from "@/app/design-system/DesignSystem";
 import { BlogProp } from "@/app/services/blog";
+import { formattBlogListDate } from "@/app/services/utils";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import React, { useRef, useState } from "react";
@@ -183,7 +184,6 @@ export default function BlogList({ blogs, setSelectedBlog }: BlogListProp) {
       gsap.to(e.currentTarget, {
         duration: 0.2,
         color: color.secondary,
-        fontWeight: "600",
       });
     });
 
@@ -196,7 +196,6 @@ export default function BlogList({ blogs, setSelectedBlog }: BlogListProp) {
       gsap.to(e.currentTarget, {
         duration: 0.2,
         color: "black",
-        fontWeight: "normal",
       });
     });
 
@@ -248,18 +247,29 @@ export default function BlogList({ blogs, setSelectedBlog }: BlogListProp) {
                       {blogPost.month}
                     </p>
                   </div>
-                  <div className="blog-entries w-full flex flex-col p-3 overflow-hidden">
-                    <ul className="flex flex-col gap-3 bg-green ">
+                  <div className="blog-entries w-full flex flex-col py-2 overflow-hidden">
+                    <ul className="flex flex-col gap-3 bg-green">
                       {blogPost.entries.map((blog) => {
                         return (
                           <li
-                            onClick={() => handleClickBlog(blog)}
+                            onClick={() => {
+                              handleClickBlog(blog);
+                            }}
                             key={blog.id}
                             onMouseEnter={handleMouseEnterBlogDate}
                             onMouseLeave={handleMouseLeaveBlogDate}
-                            className="text-sm text-center cursor-pointer"
+                            className={`{text-sm text-center cursor-pointer}`}
                           >
-                            {blog.title}
+                            <div className="flex flex-row gap-2">
+                              <span>
+                                {formattBlogListDate(blog.created_at)}
+                              </span>
+                              <span>{"-"}</span>
+                              <span>
+                                {blog.title.slice(0, 15)}
+                                {blog.title.length > 15 && "..."}
+                              </span>
+                            </div>
                           </li>
                         );
                       })}

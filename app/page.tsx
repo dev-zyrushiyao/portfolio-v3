@@ -68,37 +68,38 @@ gsap.registerPlugin(DrawSVGPlugin);
 export default function Home() {
   const container = useRef<HTMLDivElement>(null);
 
-  
-
   useGSAP(
     () => {
       //FOUC
       gsap.set(container.current, { opacity: 1 });
 
-      const otherWrapper = container.current?.querySelector(".other-wrapper");
-      const otherSection =
-        container.current?.querySelectorAll(".other-section");
+      //desktop ST
 
-      if (!otherWrapper || !otherSection) return;
+      const mm = gsap.matchMedia();
+      mm.add("(min-width: 768px)", () => {
+        const otherWrapper = container.current?.querySelector(".other-wrapper");
+        const otherSection =
+          container.current?.querySelectorAll(".other-section");
 
-      otherSection?.forEach((element) => {
-        const innerBox = element.querySelector(".inner-box");
-        const icon = element.querySelector(".other-label-icon svg path");
+        if (!otherWrapper || !otherSection) return;
 
-        console.log("icon", icon);
+        otherSection?.forEach((element) => {
+          const innerBox = element.querySelector(".inner-box");
+          const icon = element.querySelector(".other-label-icon svg path");
 
-        const otherSectionTl = gsap
-          .timeline({ paused: true })
-          .to(innerBox, { yPercent: -100 })
-          .to(element, { zIndex: 1 }, "<")
-          .from(icon, { drawSVG: 0 }, "<");
+          const otherSectionTl = gsap
+            .timeline({ paused: true })
+            .to(innerBox, { yPercent: -100 })
+            .to(element, { zIndex: 1 }, "<")
+            .from(icon, { drawSVG: 0 }, "<");
 
-        element.addEventListener("mouseenter", () => {
-          otherSectionTl.play();
-        });
+          element.addEventListener("mouseenter", () => {
+            otherSectionTl.play();
+          });
 
-        element.addEventListener("mouseleave", () => {
-          otherSectionTl.reverse();
+          element.addEventListener("mouseleave", () => {
+            otherSectionTl.reverse();
+          });
         });
       });
     },
@@ -263,7 +264,7 @@ export default function Home() {
           </section>
 
           {/* dev blog and project */}
-          <div className="other-wrapper flex flex-row justify-around z-0">
+          <div className="other-wrapper flex flex-row justify-around">
             {otherLinks.map((element) => {
               return (
                 <Link
@@ -271,13 +272,15 @@ export default function Home() {
                   href={element.link}
                   className="text-black"
                 >
-                  <div className="other-section h-[clamp(200px,20vw,50vw)] w-[clamp(200px,20vw,40vw)] flex flex-col justify-center items-center bg-amber-200 relative overflow-clip cursor-pointer">
+                  <div className="other-section h-[clamp(100px,20vw,50vw)] w-[clamp(100px,20vw,40vw)] flex flex-col justify-center items-center bg-amber-200 relative overflow-clip cursor-pointer">
                     <div className="other-label relative inset-0 z-10 flex flex-col items-center">
                       <div className="other-label-icon h-[clamp(24px,5vw,60px)] w-[clamp(24px,5vw,60px)]">
                         {element.icon}
                       </div>
-                      <div className="lg:text-2xl text-xl">
-                        <h6 className="font-sans">{element.title}</h6>
+                      <div>
+                        <h6 className="font-sans lg:text-2xl text-sm">
+                          {element.title}
+                        </h6>
                       </div>
                     </div>
                     <div className="inner-box bg-pink-300 h-[clamp(200px,20vw,50vw)] w-[clamp(200px,20vw,40vw)] top-full left-0 absolute"></div>

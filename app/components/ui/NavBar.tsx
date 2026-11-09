@@ -38,8 +38,6 @@ export default function NavBar() {
       const navBar = container.current?.querySelector("nav");
       if (!navBar) return;
 
-      console.log("navbar usegsap triggered");
-
       // set the default color of Nav
       gsap.set(navBar, {
         backgroundColor: defaultBg,

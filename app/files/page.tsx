@@ -2,10 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import MiniBanner from "../components/ui/MiniBanner";
-import PrimaryButton from "../components/ui/PrimaryButton";
 import { FileProp, getFiles } from "../services/file";
-import Image from "next/image";
-import defaultImage from "@/public/default_img.png";
 import FileCard from "../components/ui/FileCard";
 import LoadingComp from "../components/ui/LoadingComp";
 import SectionHeader from "../components/ui/SectionHeader";

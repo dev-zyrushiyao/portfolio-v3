@@ -11,19 +11,15 @@ export default function ContactForm({ categoryMenu }: ContactFormProps) {
   const [resultMessage, setResultMessage] = useState<string>("");
   const [isPending, setIsPending] = useState<boolean>(false);
 
-  // useEffect(() => {
-  //   setResultMessage("");
-  // }, []);
-
   return (
-    <div className=" w-150 flex flex-col items-center">
+    <div className="w-150  flex flex-col items-center">
       <div className="message-wrapper h-10 w-full">
         <p id="submit-result" className={`submit-result font-semibold`}>
           {resultMessage}
         </p>
       </div>
       <form
-        className="w-100 flex flex-col gap-5"
+        className="lg:w-100 w-80 flex flex-col gap-5"
         onSubmit={async (e) => {
           e.preventDefault();
 

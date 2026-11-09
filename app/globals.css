@@ -41,10 +41,6 @@
   p {
     @apply lg:text-xl md:text-lg text-sm font-sans;
   }
-
-  a {
-    @apply text-blue-700;
-  }
 }
 
 @media (prefers-color-scheme: dark) {

@@ -18,26 +18,30 @@ export default function SecondaryButton({ label }: { label: string }) {
         container.current?.querySelector(".expanding-circle");
       if (!expandingCircle || !button) return;
 
-      gsap.set(expandingCircle, { scale: 0 });
+      const mm = gsap.matchMedia();
+      //desktop ST
+      mm.add("(min-width: 1022px)", () => {
+        gsap.set(expandingCircle, { scale: 0, opacity: 1 });
 
-      const hoverIn = gsap.to(expandingCircle, {
-        paused: true,
-        scale: 1,
-        ease: "circ",
-      });
+        const hoverIn = gsap.to(expandingCircle, {
+          paused: true,
+          scale: 1,
+          ease: "circ",
+        });
 
-      const hoverOut = gsap.to(expandingCircle, {
-        paused: true,
-        scale: 0,
-        ease: "circ",
-      });
+        const hoverOut = gsap.to(expandingCircle, {
+          paused: true,
+          scale: 0,
+          ease: "circ",
+        });
 
-      button.addEventListener("mouseenter", () => {
-        hoverIn.restart();
-      });
+        button.addEventListener("mouseenter", () => {
+          hoverIn.restart();
+        });
 
-      button.addEventListener("mouseleave", () => {
-        hoverOut.restart();
+        button.addEventListener("mouseleave", () => {
+          hoverOut.restart();
+        });
       });
     },
     { scope: container },
@@ -51,7 +55,7 @@ export default function SecondaryButton({ label }: { label: string }) {
       >
         <span className="relative z-10">{label}</span>
         <div
-          className="expanding-circle h-50 w-50 absolute top-1/2 left-1/2 -translate-1/2 origin-center rounded-full"
+          className="expanding-circle h-50 w-50 absolute top-1/2 left-1/2 -translate-1/2 origin-center rounded-full opacity-0"
           style={{ backgroundColor: color.accent }}
         />
       </button>

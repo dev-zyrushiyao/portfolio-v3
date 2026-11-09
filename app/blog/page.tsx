@@ -13,11 +13,12 @@ import SectionHeader from "../components/ui/SectionHeader";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 
 const defaultBannerBg: string = "#A7E074";
 const defaultLabel: string = "Blog";
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
 export default function Blog() {
   const [blogs, setBlogs] = useState<BlogProp[]>([]);
@@ -25,11 +26,15 @@ export default function Blog() {
   const [randomizeBlogs, setRandomizeBlogs] = useState<BlogProp[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
+  //mobile prev / next state
+  const [viewingIndex, setViewingIndex] = useState<number>(0);
+
   useEffect(() => {
     async function fetchBlogs() {
       const res = await getAllBlogs();
-      setBlogs(res);
-      setSelectedBlog(res.at(-1) || null);
+      setBlogs(res.reverse());
+      setSelectedBlog(res[res.length - 1] || null);
+      setViewingIndex(res.length - 1);
 
       //shuffled and get 5 items
       const shuffled = [...res].sort(() => Math.random() - 0.5).slice(0, 5);
@@ -47,24 +52,63 @@ export default function Blog() {
   }, []);
 
   const container = useRef<HTMLDivElement | null>(null);
-  useGSAP(() => {
-    if (loading) return;
+  useGSAP(
+    () => {
+      if (loading) return;
 
-    const mm = gsap.matchMedia();
-    mm.add("(min-width: 1001px)", () => {
-      const wrapper = container.current?.querySelector(".wrapper");
-      const blogList = container.current?.querySelector(".blog-list");
-      const blogContent = container.current?.querySelector(".blog-content");
-      if (!wrapper || !blogContent) return;
+      const mm = gsap.matchMedia();
+      mm.add("(min-width: 1001px)", () => {
+        const wrapper = container.current?.querySelector(".wrapper");
+        const blogList = container.current?.querySelector(".blog-list");
+        const blogContent = container.current?.querySelector(".blog-content");
+        if (!wrapper || !blogContent) return;
 
-      ScrollTrigger.create({
-        trigger: blogContent,
-        start: "top 10%",
-        end: "bottom 33%",
-        pin: blogList,
+        ScrollTrigger.create({
+          trigger: blogContent,
+          start: "top 10%",
+          end: "bottom 33%",
+          markers: true,
+          invalidateOnRefresh: true,
+          pin: blogList,
+        });
       });
-    });
-  }, [loading]);
+    },
+    { scope: container, dependencies: [loading] },
+  );
+
+  useGSAP(
+    () => {
+      if (!selectedBlog || loading) return;
+
+      //GSAP ScrollTo: targeting #blog-title-header of the component <BlogContent/> from the Blog Page
+      const blogCompWrapper =
+        container.current?.querySelector("#blog-comp-wrapper");
+      if (!blogCompWrapper) return;
+
+      const mm = gsap.matchMedia();
+      mm.add("(min-width: 1001px)", () => {
+        gsap.to(window, {
+          duration: 0.5,
+          scrollTo: blogCompWrapper,
+          ease: "power1.inOut",
+        });
+
+        //re-render component of <BlogContent/> that uses selectedBlog as prop
+        //re-render the Blog Page and refresh its scrollTrigger
+        //re-render of <BlogContent/> and Blog page simultaneously will fail to update the ScrollTrigger to get the latest scroll area
+        //refresh scroll trigger has an offset of 0.1s to update after the <BlogContent/> re-renders
+        setTimeout(() => {
+          ScrollTrigger.refresh();
+        }, 100);
+
+        //alternative
+        // requestAnimationFrame(() => {
+        //   ScrollTrigger.refresh();
+        // });
+      });
+    },
+    { scope: container, dependencies: [selectedBlog?.id] },
+  );
 
   if (loading) {
     return (
@@ -91,8 +135,38 @@ export default function Blog() {
     <div>
       <MiniBanner backgroundColorProp={defaultBannerBg} label={defaultLabel} />
       <main>
-        <div className="content flex flex-col lg:gap-10 gap-3  lg:p-20 p-5">
-          <SectionHeader label="Dev Blog" />
+        <div className="content flex flex-col lg:gap-10 gap-3 lg:p-20 p-5">
+          {/* <SectionHeader label="Dev Blog" /> */}
+          <div className="section-header border-b border-gray-400 flex flex-row justify-between items-center bg-white p-5 z-0">
+            <h3>Dev Blog</h3>
+            <div className="flex flex-row lg:gap-20 gap-10 uppercase">
+              <button
+                disabled={viewingIndex <= 0}
+                type="button"
+                className="disabled:text-gray-400 text-black"
+                onClick={() => {
+                  const nextIndex = viewingIndex - 1;
+                  setViewingIndex((prev) => prev - 1);
+                  setSelectedBlog(blogs[nextIndex]);
+                }}
+              >
+                {"< Prev"}
+              </button>
+
+              <button
+                disabled={viewingIndex >= blogs.length - 1}
+                type="button"
+                className="disabled:text-gray-400 text-black"
+                onClick={() => {
+                  const nextIndex = viewingIndex + 1;
+                  setViewingIndex((prev) => prev + 1);
+                  setSelectedBlog(blogs[nextIndex]);
+                }}
+              >
+                {"Next >"}
+              </button>
+            </div>
+          </div>
 
           {blogs.length === 0 ? (
             <div className="h-100 flex flex-col justify-center items-center">
@@ -109,7 +183,7 @@ export default function Blog() {
                   <BlogList blogs={blogs} setSelectedBlog={setSelectedBlog} />
                 </div>
 
-                <div className="blog-content w-full h-fit min-w-50 flex-1">
+                <div className="blog-content w-full h-full min-w-50 flex-1">
                   {selectedBlog && <BlogContent blogPost={selectedBlog} />}
                 </div>
               </div>
