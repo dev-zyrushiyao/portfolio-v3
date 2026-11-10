@@ -14,7 +14,6 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
-import { refresh } from "next/cache";
 
 const defaultBannerBg: string = "#A7E074";
 const defaultLabel: string = "Blog";
@@ -73,7 +72,7 @@ export default function Blog() {
           end: "bottom 40%",
           pin: blogList,
           anticipatePin: 1,
-          markers: true,
+          // markers: true,
         });
       });
     },
