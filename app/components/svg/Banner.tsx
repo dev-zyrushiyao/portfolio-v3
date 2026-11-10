@@ -13,7 +13,7 @@ export default function Banner() {
   const { contextSafe } = useGSAP(
     () => {
       //svg FOUC
-      gsap.set(container.current, { opacity: 1 });
+      // gsap.set(container.current, { opacity: 1 });
 
       //piranha animation
       gsap.set("#piranha", { yPercent: 100 });
@@ -92,7 +92,7 @@ export default function Banner() {
   return (
     <svg
       ref={container}
-      className="opacity-0"
+      // className="opacity-0"
       // width={1440}
       // height={600}
       viewBox="0 0 1440 600"
