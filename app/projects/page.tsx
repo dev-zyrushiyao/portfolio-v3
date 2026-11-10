@@ -150,12 +150,17 @@ export default function Projects() {
           label={defaultLabel}
         />
         <main>
-          <div className="content flex flex-col gap-10 w-full ">
-            <SectionHeader label="Personal Projects" />
-            <div className="wrapper lg:flex-row flex flex-col lg:flex-wrap justify-center items-center gap-10 p-5">
-              {Array.from({ length: 4 }, (_, index) => {
-                return <LoadingProjectCard key={index} />
-              })}
+          <div className="content flex flex-col">
+            <div className="wrapper w-full overflow-clip z-20 bg-white">
+              <div className="box-spacer h-20 w-full"></div>
+              <div className="content-header border-b border-gray-400 flex lg:flex-row flex-col justify-between items-center py-5 lg:px-25 px-5 lg:w-full gap-10">
+                <h3 className="w-fit text-nowrap">Personal Projects</h3>
+              </div>
+              <div className="wrapper lg:flex-row flex flex-col lg:flex-wrap justify-center items-center gap-10 p-5">
+                {Array.from({ length: 4 }, (_, index) => {
+                  return <LoadingProjectCard key={index} />;
+                })}
+              </div>
             </div>
           </div>
         </main>
@@ -172,7 +177,7 @@ export default function Projects() {
             <div className="box-spacer h-20 w-full"></div>
             <div className="content-header border-b border-gray-400 flex lg:flex-row flex-col justify-between items-center py-5 lg:px-25 px-5 lg:w-full gap-10">
               <h3 className="w-fit text-nowrap">Personal Projects</h3>
-              <div className="flex flex-row gap-5 justify-center">
+              <div className="flex flex-row gap-5 justify-center items-center">
                 <button
                   disabled={currentPage === 1}
                   className="border border-gray-500 p-5 cursor-pointer"
@@ -202,6 +207,9 @@ export default function Projects() {
                       </button>
                     ),
                 )} */}
+                <p>
+                  Page of {currentPage} of {totalPages}
+                </p>
                 <button
                   disabled={currentPage === totalPages || totalPages === 0}
                   className="border border-gray-500 p-5 cursor-pointer"
