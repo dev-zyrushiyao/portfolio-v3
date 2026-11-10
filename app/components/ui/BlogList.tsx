@@ -207,7 +207,7 @@ export default function BlogList({ blogs, setSelectedBlog }: BlogListProp) {
   }
 
   return (
-    <div className="blog-list h-fit border-2 border-gray-300 bg-gray-200 rounded-2xl p-5 hidden lg:block">
+    <div className="blog-list  border-2 border-gray-300 bg-gray-200 rounded-2xl p-5 hidden lg:block">
       <div ref={container} className="blog-wrapper lg:w-50 w-full opacity-0">
         <div className="blog-year flex flex-row h-20 w-full gap-3 justify-center items-center">
           <button
@@ -235,7 +235,7 @@ export default function BlogList({ blogs, setSelectedBlog }: BlogListProp) {
           </button>
         </div>
         <ul className="blog-list-date flex flex-col gap-5  ">
-          <li className="list-content">
+          <li className="list-content ">
             {monthlyBlogGroups.map((blogPost) => {
               return (
                 <div key={blogPost.month} className="blog-wrapper">
@@ -260,7 +260,7 @@ export default function BlogList({ blogs, setSelectedBlog }: BlogListProp) {
                             onMouseLeave={handleMouseLeaveBlogDate}
                             className={`{text-sm text-center cursor-pointer}`}
                           >
-                            <div className="flex flex-row gap-2">
+                            <div className="flex flex-row gap-2 ">
                               <span>
                                 {formattBlogListDate(blog.created_at)}
                               </span>

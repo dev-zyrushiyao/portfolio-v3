@@ -73,6 +73,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         </div>
 
         {children}
+
         <FooterBar />
       </body>
     </html>

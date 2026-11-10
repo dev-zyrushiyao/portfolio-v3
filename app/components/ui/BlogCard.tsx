@@ -11,7 +11,7 @@ export default function BlogCard({ randomizeBlog, onClick }: BlogCardProp) {
     <div
       onClick={onClick}
       key={randomizeBlog.id}
-      className="bg-gray-200 cursor-pointer p-10 rounded-xs h-100 w-100 shrink-0 flex flex-col justify-center items-center text-center"
+      className="bg-gray-200  cursor-pointer p-10 rounded-xs h-100 w-100 shrink-0 flex flex-col justify-center items-center text-center"
     >
       <h5>
         {randomizeBlog.title.slice(0, 12)}

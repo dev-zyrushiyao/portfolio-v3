@@ -14,6 +14,7 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
+import { refresh } from "next/cache";
 
 const defaultBannerBg: string = "#A7E074";
 const defaultLabel: string = "Blog";
@@ -33,19 +34,21 @@ export default function Blog() {
     async function fetchBlogs() {
       const res = await getAllBlogs();
       setBlogs(res.reverse());
-      setSelectedBlog(res[res.length - 1] || null);
+      setSelectedBlog(res[res.length - 1]);
       setViewingIndex(res.length - 1);
 
       //shuffled and get 5 items
       const shuffled = [...res].sort(() => Math.random() - 0.5).slice(0, 5);
       setRandomizeBlogs(shuffled);
 
-      //waiting time 0.7s
+      // waiting time 0.7s
       new Promise(() => {
         setTimeout(() => {
           setLoading(false);
         }, 700);
       });
+
+      setLoading(false);
     }
 
     fetchBlogs();
@@ -63,13 +66,14 @@ export default function Blog() {
         const blogContent = container.current?.querySelector(".blog-content");
         if (!wrapper || !blogContent) return;
 
+        //ST Init
         ScrollTrigger.create({
           trigger: blogContent,
           start: "top 10%",
-          end: "bottom 33%",
-          // markers: true,
-          invalidateOnRefresh: true,
+          end: "bottom 40%",
           pin: blogList,
+          anticipatePin: 1,
+          markers: true,
         });
       });
     },
@@ -78,36 +82,42 @@ export default function Blog() {
 
   useGSAP(
     () => {
-      if (!selectedBlog || loading) return;
-
-      //GSAP ScrollTo: targeting #blog-title-header of the component <BlogContent/> from the Blog Page
-      const blogCompWrapper =
-        container.current?.querySelector("#blog-comp-wrapper");
-      if (!blogCompWrapper) return;
-
       const mm = gsap.matchMedia();
       mm.add("(min-width: 1001px)", () => {
-        gsap.to(window, {
-          duration: 0.5,
-          scrollTo: blogCompWrapper,
-          ease: "power1.inOut",
-        });
+        if (!selectedBlog || loading) return;
 
-        //re-render component of <BlogContent/> that uses selectedBlog as prop
-        //re-render the Blog Page and refresh its scrollTrigger
-        //re-render of <BlogContent/> and Blog page simultaneously will fail to update the ScrollTrigger to get the latest scroll area
-        //refresh scroll trigger has an offset of 0.1s to update after the <BlogContent/> re-renders
-        setTimeout(() => {
-          ScrollTrigger.refresh();
-        }, 100);
+        console.log("test");
 
-        //alternative
-        // requestAnimationFrame(() => {
-        //   ScrollTrigger.refresh();
-        // });
+        async function refreshScrollArea() {
+          await setTimeout(() => {
+            ScrollTrigger.refresh();
+          }, 100);
+
+          //GSAP ScrollTo: targeting #blog-title-header of the component <BlogContent/> from the Blog Page
+          const blogCompWrapper =
+            container.current?.querySelector("#blog-comp-wrapper");
+          if (!blogCompWrapper) return;
+          gsap.to(window, {
+            duration: 0.3,
+            scrollTo: { y: 200, autoKill: true },
+            ease: "none",
+          });
+        }
+
+        refreshScrollArea();
       });
+
+      // re-render component of <BlogContent/> that uses selectedBlog as prop
+      // re-render the Blog Page and refresh its scrollTrigger
+      // re-render of <BlogContent/> and Blog page simultaneously will fail to update the ScrollTrigger to get the latest scroll area
+      // refresh scroll trigger has an offset of 0.1s to update after the <BlogContent/> re-renders
+
+      //alternative to setTimeOut
+      // requestAnimationFrame(() => {
+      //   ScrollTrigger.refresh();
+      // });
     },
-    { scope: container, dependencies: [selectedBlog?.id] },
+    { scope: container, dependencies: [selectedBlog] },
   );
 
   if (loading) {
@@ -129,6 +139,9 @@ export default function Blog() {
 
   function handleClickBlog(blog: BlogProp) {
     setSelectedBlog(blog);
+
+    const targetIndex = blogs.indexOf(blog);
+    setViewingIndex(targetIndex);
   }
 
   return (
@@ -143,7 +156,7 @@ export default function Blog() {
               <button
                 disabled={viewingIndex <= 0}
                 type="button"
-                className="disabled:text-gray-400 text-black"
+                className="disabled:text-gray-400 disabled:cursor-default cursor-pointer  text-black "
                 onClick={() => {
                   const nextIndex = viewingIndex - 1;
                   setViewingIndex((prev) => prev - 1);
@@ -156,7 +169,7 @@ export default function Blog() {
               <button
                 disabled={viewingIndex >= blogs.length - 1}
                 type="button"
-                className="disabled:text-gray-400 text-black"
+                className="disabled:text-gray-400 disabled:cursor-default cursor-pointer text-black"
                 onClick={() => {
                   const nextIndex = viewingIndex + 1;
                   setViewingIndex((prev) => prev + 1);
@@ -175,20 +188,20 @@ export default function Blog() {
           ) : (
             <div
               ref={container}
-              className="flex flex-col lg:gap-20 gap-10 overflow-hidden"
+              className="flex flex-col lg:gap-20 gap-10 overflow-hidden relative"
             >
               {/* Blog section */}
               <div className="wrapper flex flex-col lg:flex-row lg:gap-10 gap-5">
-                <div className="blog-list min-w-60 w-fit lg:block hidden">
+                <div className="blog-list h-fit min-w-60 w-fit lg:block hidden">
                   <BlogList blogs={blogs} setSelectedBlog={setSelectedBlog} />
                 </div>
 
-                <div className="blog-content w-full h-full min-w-50 flex-1">
+                <div className="blog-content w-full h-auto  flex-1  bg-amber-300 min-w-50">
                   {selectedBlog && <BlogContent blogPost={selectedBlog} />}
                 </div>
               </div>
               {/* other blogs */}
-              <div className="flex flex-col gap-3">
+              <div className="flex flex-col gap-3 ">
                 <h6>Other blogs:</h6>
                 <div
                   className={`blog-cards flex flex-row gap-5 ${randomizeBlogs.length !== 0 && "overflow-x-scroll"} py-5`}
@@ -197,7 +210,9 @@ export default function Blog() {
                     return (
                       <BlogCard
                         key={rblog.id}
-                        onClick={() => handleClickBlog(rblog)}
+                        onClick={async () => {
+                          handleClickBlog(rblog);
+                        }}
                         randomizeBlog={rblog}
                       />
                     );
