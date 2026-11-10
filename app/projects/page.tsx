@@ -154,7 +154,7 @@ export default function Projects() {
             <SectionHeader label="Personal Projects" />
             <div className="wrapper lg:flex-row flex flex-col lg:flex-wrap justify-center items-center gap-10 p-5">
               {Array.from({ length: 4 }, (_, index) => {
-                return <LoadingProjectCard key={index} />;
+                return <LoadingProjectCard key={index} />
               })}
             </div>
           </div>

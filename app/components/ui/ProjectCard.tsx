@@ -57,7 +57,7 @@ export default function ProjectCard({ project, onClick }: ProjectCardProp) {
         </div>
 
         <div className="project-information flex flex-col gap-5 ">
-          <h5 className="project-title wrap-break-word">{project.title}RAT</h5>
+          <h5 className="project-title wrap-break-word">{project.title}</h5>
           <p className="project-description lg:line-clamp-5 hidden">
             {project.description_desktop}
           </p>
