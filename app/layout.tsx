@@ -47,6 +47,9 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "Zyrus Hiyao" }],
   metadataBase: new URL("https://zyrushiyao.vercel.app"),
+  verification: {
+    google: "googleac3006e21ba3c930", //from Google Search Console
+  },
   openGraph: {
     title: "Zyrus Hiyao — Frontend Developer & UI/UX Designer",
     description:
