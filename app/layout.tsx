@@ -35,8 +35,27 @@ const googleSansFlex = Google_Sans_Flex({
 });
 
 export const metadata: Metadata = {
-  title: "Zyrus Hiyao Portfolio",
-  description: "Website of Zyrus Hiyao",
+  title: "Zyrus Hiyao — Frontend Developer & UI/UX Designer",
+  description:
+    "Explore the portfolio of Zyrus Hiyao, a frontend web developer and UI/UX designer specializing in modern web applications and mobile experiences.",
+  keywords: [
+    "Zyrus Hiyao",
+    "Frontend Developer",
+    "UI/UX Designer",
+    "Next.js Portfolio",
+    "React",
+  ],
+  authors: [{ name: "Zyrus Hiyao" }],
+  metadataBase: new URL("https://zyrushiyao.vercel.app"),
+  openGraph: {
+    title: "Zyrus Hiyao — Frontend Developer & UI/UX Designer",
+    description:
+      "Explore the portfolio of Zyrus Hiyao, showcasing web development and UI/UX projects.",
+    url: "https://zyrushiyao.vercel.app",
+    siteName: "Zyrus Hiyao Portfolio",
+    locale: "en_US",
+    type: "website",
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
