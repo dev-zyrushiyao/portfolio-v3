@@ -56,7 +56,7 @@ export const metadata: Metadata = {
       "Explore the portfolio of Zyrus Hiyao, showcasing web development and UI/UX projects.",
     url: "https://zyrushiyao.vercel.app",
     siteName: "Zyrus Hiyao Portfolio",
-    locale: "en_US",
+    locale: "en_PH",
     type: "website",
   },
 };
