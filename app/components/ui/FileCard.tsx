@@ -44,7 +44,7 @@ export default function FileCard({ file }: FileCardProp) {
   return (
     <div
       key={file.id}
-      className="file-card border border-gray-300 rounded-lg bg-gray-100 lg:w-100 w-80 flex flex-col items-center p-5 z-0"
+      className="file-card border border-gray-300 rounded-lg bg-gray-100 w-80 flex flex-col items-center p-5 z-0"
     >
       <div className="file-image h-50 w-full bg-gray-300 rounded-sm relative">
         <Image
