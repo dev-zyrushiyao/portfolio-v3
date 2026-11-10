@@ -100,6 +100,11 @@ export default function Banner() {
       xmlns="http://www.w3.org/2000/svg"
       xmlnsXlink="http://www.w3.org/1999/xlink"
     >
+      {/* stack overflow https://stackoverflow.com/questions/65550233/svg-clip-path-with-foreignobject-on-ios-fails */}
+      <clipPath id="clip" clipPathUnits="objectBoundingBox">
+        <rect x="0" y="0" width="1" height="1" rx="0.1" ry="0.1" />
+      </clipPath>
+
       <g id="banner" clipPath="url(#clip0_3841_11138)">
         <rect width={1440} height={600} fill="white" />
         <rect
