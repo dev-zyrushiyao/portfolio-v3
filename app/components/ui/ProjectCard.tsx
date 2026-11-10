@@ -50,6 +50,8 @@ export default function ProjectCard({ project, onClick }: ProjectCardProp) {
             sizes="(max-width: 768px) 100vw, 50vw"
             loading="eager"
             fill
+            priority
+            fetchPriority="high"
             className="object-cover"
           />
         </div>
