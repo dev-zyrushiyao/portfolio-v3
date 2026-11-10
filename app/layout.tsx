@@ -53,7 +53,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Zyrus Hiyao — Frontend Developer & UI/UX Designer",
     description:
-      "Explore the portfolio of Zyrus Hiyao, showcasing web development and UI/UX projects.",
+      "Welcome to my personal web portfolio! I'm Zyrus Hiyao, a frontend developer and UI/UX designer showcasing responsive web applications built with React, TypeScript, and Tailwind CSS.",
     url: "https://zyrushiyao.vercel.app",
     siteName: "Zyrus Hiyao Portfolio",
     locale: "en_PH",
