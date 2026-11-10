@@ -6,7 +6,7 @@ export default function BlogContent({ blogPost }: { blogPost: BlogProp }) {
   return (
     <article
       id="blog-comp-wrapper"
-      className="w-full min-h-300  h-full bg-gray-200 lg:p-20 md:p-10 p-5 flex flex-col gap-10 wrap-break-word"
+      className="w-full h-full bg-gray-200 lg:p-20 md:p-10 p-5 flex flex-col gap-10 wrap-break-word"
     >
       <div className="content-title flex flex-col justify-between items-start gap-5">
         <h1 className="w-full">{blogPost.title}</h1>

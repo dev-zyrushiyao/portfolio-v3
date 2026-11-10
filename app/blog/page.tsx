@@ -82,30 +82,27 @@ export default function Blog() {
 
   useGSAP(
     () => {
-      const mm = gsap.matchMedia();
-      mm.add("(min-width: 1001px)", () => {
-        if (!selectedBlog || loading) return;
+      if (!selectedBlog || loading) return;
 
-        console.log("test");
+      console.log("test");
 
-        async function refreshScrollArea() {
-          await setTimeout(() => {
-            ScrollTrigger.refresh();
-          }, 100);
+      async function refreshScrollArea() {
+        await setTimeout(() => {
+          ScrollTrigger.refresh();
+        }, 100);
 
-          //GSAP ScrollTo: targeting #blog-title-header of the component <BlogContent/> from the Blog Page
-          const blogCompWrapper =
-            container.current?.querySelector("#blog-comp-wrapper");
-          if (!blogCompWrapper) return;
-          gsap.to(window, {
-            duration: 0.3,
-            scrollTo: { y: 200, autoKill: true },
-            ease: "none",
-          });
-        }
+        //GSAP ScrollTo: targeting #blog-title-header of the component <BlogContent/> from the Blog Page
+        const blogCompWrapper =
+          container.current?.querySelector("#blog-comp-wrapper");
+        if (!blogCompWrapper) return;
+        gsap.to(window, {
+          duration: 0.3,
+          scrollTo: { y: 200, autoKill: true },
+          ease: "none",
+        });
+      }
 
-        refreshScrollArea();
-      });
+      refreshScrollArea();
 
       // re-render component of <BlogContent/> that uses selectedBlog as prop
       // re-render the Blog Page and refresh its scrollTrigger
@@ -196,7 +193,7 @@ export default function Blog() {
                   <BlogList blogs={blogs} setSelectedBlog={setSelectedBlog} />
                 </div>
 
-                <div className="blog-content w-full h-auto  flex-1  bg-amber-300 min-w-50">
+                <div className="blog-content w-full h-auto  flex-1 min-w-50">
                   {selectedBlog && <BlogContent blogPost={selectedBlog} />}
                 </div>
               </div>
