@@ -67,7 +67,7 @@ export default function Blog() {
           trigger: blogContent,
           start: "top 10%",
           end: "bottom 33%",
-          markers: true,
+          // markers: true,
           invalidateOnRefresh: true,
           pin: blogList,
         });

@@ -12,8 +12,9 @@ export interface BlogProp {
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
 
 export async function getAllBlogs() {
+  //sort to created at
   const res = await fetch(
-    "https://ylfbtnwzwdzqsmipjzuv.supabase.co/rest/v1/blogs",
+    "https://ylfbtnwzwdzqsmipjzuv.supabase.co/rest/v1/blogs?order=created_at.desc",
     {
       method: "GET",
       headers: {
