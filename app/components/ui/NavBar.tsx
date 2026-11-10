@@ -141,7 +141,7 @@ export default function NavBar() {
       <nav className="h-20 w-full bg-black flex flex-row items-center p-8 border border-gray-500">
         <div className="w-full">
           <div className="logo-wrapper h-fit w-fit ">
-            <Link href={"/"}>
+            <Link href={"/"} aria-label="Zyrus Hiyao Home">
               <Logo />
             </Link>
           </div>
