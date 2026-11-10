@@ -132,7 +132,7 @@ export default function Home() {
               </div>
               <div>
                 <h3>Introduction</h3>
-                <h5 style={{ color: color.accent }}>ᜉᜄ᜔ᜉᜉᜃᜒᜎᜎ</h5>
+                {/* <h5 style={{ color: color.accent }}>ᜉᜄ᜔ᜉᜉᜃᜒᜎᜎ</h5> */}
               </div>
             </div>
             <div
@@ -195,7 +195,7 @@ export default function Home() {
               </div>
               <div>
                 <h3>Techstack</h3>
-                <h5 style={{ color: color.accent }}>ᜆᜒᜃᜁᜐ᜔ᜆᜃ᜔</h5>
+                {/* <h5 style={{ color: color.accent }}>ᜆᜒᜃᜁᜐ᜔ᜆᜃ᜔</h5> */}
               </div>
             </div>
             <div
@@ -231,7 +231,7 @@ export default function Home() {
               </div>
               <div>
                 <h3>Certificates</h3>
-                <h5 style={{ color: color.accent }}>ᜐᜒᜍ᜔ᜆᜒᜉᜒᜃᜐ᜔ᜌᜓᜈ᜔</h5>
+                {/* <h5 style={{ color: color.accent }}>ᜐᜒᜍ᜔ᜆᜒᜉᜒᜃᜐ᜔ᜌᜓᜈ᜔</h5> */}
               </div>
             </div>
             <div

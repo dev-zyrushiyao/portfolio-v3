@@ -34,16 +34,20 @@ export default function Banner() {
         .to(questionBox, { repeat: 1, yoyo: true, y: -10 }, "<")
         .to("#coin", { opacity: 0, delay: 0.3 }, "<");
 
+      const mm = gsap.matchMedia();
       const svgText = container.current?.querySelector(".svg-text h1");
       if (!svgText) return;
 
-      gsap.to(svgText, {
-        duration: 2,
-        delay: 3,
-        repeat: -1,
-        yoyo: true,
-        repeatDelay: 3,
-        text: { value: "ᜐᜌ᜔ᜍᜓᜐ᜔ ᜑᜒᜌᜏ᜔" },
+      //desktop ST
+      mm.add("(min-width: 1022px)", () => {
+        gsap.to(svgText, {
+          duration: 2,
+          delay: 3,
+          repeat: -1,
+          yoyo: true,
+          repeatDelay: 3,
+          text: { value: "ᜐᜌ᜔ᜍᜓᜐ᜔ ᜑᜒᜌᜏ᜔" },
+        });
       });
     },
     { scope: container },
@@ -88,7 +92,7 @@ export default function Banner() {
   return (
     <svg
       ref={container}
-      className="opacity-0 relative"
+      className="opacity-0"
       // width={1440}
       // height={600}
       viewBox="0 0 1440 600"

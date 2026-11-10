@@ -84,7 +84,6 @@ export default function NavBar() {
 
       //toggle hamburger & mobile menu animation
       hamburgerTlRef.current = gsap.timeline({ paused: true });
-
       hamburgerTlRef.current
         .to(mobileMenu, { xPercent: -100 })
         .fromTo(blackCover, { autoAlpha: 0 }, { autoAlpha: 1 }, "<");
@@ -183,7 +182,7 @@ export default function NavBar() {
       </nav>
       <div className="nav-mobile-wrap overflow-x-clip">
         <div
-          className="black-cover bg-black/50 h-dvh w-full fixed opacity-0"
+          className="black-cover bg-black/50 h-full w-full fixed opacity-0"
           onClick={closeMobileMenu}
         ></div>
         <div className="mobile-menu h-dvh w-[30vh] absolute top-20 lg:invisible block bg-[#6A0400]">
