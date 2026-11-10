@@ -258,9 +258,9 @@ export default function BlogList({ blogs, setSelectedBlog }: BlogListProp) {
                             key={blog.id}
                             onMouseEnter={handleMouseEnterBlogDate}
                             onMouseLeave={handleMouseLeaveBlogDate}
-                            className={`{text-sm text-center cursor-pointer}`}
+                            className={`{text-sm text-center}`}
                           >
-                            <div className="flex flex-row gap-2 ">
+                            <div className="flex flex-row gap-2 cursor-pointer ">
                               <span>
                                 {formattBlogListDate(blog.created_at)}
                               </span>
