@@ -100,10 +100,12 @@ export default function Banner() {
       xmlns="http://www.w3.org/2000/svg"
       xmlnsXlink="http://www.w3.org/1999/xlink"
     >
-      {/* stack overflow https://stackoverflow.com/questions/65550233/svg-clip-path-with-foreignobject-on-ios-fails */}
-      <clipPath id="clip" clipPathUnits="objectBoundingBox">
-        <rect x="0" y="0" width="1" height="1" rx="0.1" ry="0.1" />
-      </clipPath>
+      <defs>
+        {/* stack overflow  */}
+        <clipPath id="rounded-clip" clipPathUnits="objectBoundingBox">
+          <rect x="0" y="0" width="1" height="1" rx="0.1" ry="0.1" />
+        </clipPath>
+      </defs>
 
       <g id="banner" clipPath="url(#clip0_3841_11138)">
         <rect width={1440} height={600} fill="white" />
@@ -848,6 +850,7 @@ export default function Banner() {
           x={1440 / 2 - 400} // Half of SVG width minus half of object width (720 - 300 = 420)
           y={600 / 2 - 150} // Half of SVG height minus half of object height (300 - 150 = 150)
           className="svg-text h-[300px] w-[800px] pointer-events-none select-none"
+          style={{ clipPath: "url(#rounded-clip)" }}
         >
           <div className="h-full w-full flex flex-col items-center justify-center gap-5">
             <h1 className="text-8xl font-sans  text-nowrap">Zyrus Hiyao</h1>
