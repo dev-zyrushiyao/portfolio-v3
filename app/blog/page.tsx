@@ -76,7 +76,7 @@ export default function Blog() {
         });
       });
     },
-    { scope: container, dependencies: [] },
+    { scope: container, dependencies: [loading] },
   );
 
   useGSAP(
@@ -110,7 +110,7 @@ export default function Blog() {
       //   ScrollTrigger.refresh();
       // });
     },
-    { scope: container, dependencies: [selectedBlog , viewingIndex] },
+    { scope: container, dependencies: [selectedBlog, viewingIndex] },
   );
 
   if (loading) {

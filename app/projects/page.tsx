@@ -120,7 +120,7 @@ export default function Projects() {
         });
       });
     },
-    { scope: container, dependencies: [] },
+    { scope: container, dependencies: [isLoading] },
   );
 
   //scroll trigger and inputRef refresh
