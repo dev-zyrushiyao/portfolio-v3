@@ -96,10 +96,24 @@ export default function Blog() {
         const blogCompWrapper =
           container.current?.querySelector("#blog-comp-wrapper");
         if (!blogCompWrapper) return;
-        gsap.to(window, {
-          duration: 0.3,
-          scrollTo: { y: 200, autoKill: true },
-          ease: "none",
+
+        const mm = gsap.matchMedia();
+        //desktop ST
+        mm.add("(min-width: 1022px)", () => {
+          gsap.to(window, {
+            duration: 0.3,
+            scrollTo: { y: 500, autoKill: true },
+            ease: "none",
+          });
+        });
+
+        //mobile - tablet ST
+        mm.add("(max-width: 1021px)", () => {
+          gsap.to(window, {
+            duration: 0.3,
+            scrollTo: { y: 130, autoKill: true },
+            ease: "none",
+          });
         });
       }
 
