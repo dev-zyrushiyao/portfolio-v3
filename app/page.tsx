@@ -74,7 +74,6 @@ export default function Home() {
       gsap.set(container.current, { opacity: 1 });
 
       //desktop ST
-
       const mm = gsap.matchMedia();
       mm.add("(min-width: 768px)", () => {
         const otherWrapper = container.current?.querySelector(".other-wrapper");

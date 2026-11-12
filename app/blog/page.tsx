@@ -76,16 +76,18 @@ export default function Blog() {
         });
       });
     },
-    { scope: container, dependencies: [loading] },
+    { scope: container, dependencies: [] },
   );
 
   useGSAP(
     () => {
       if (!selectedBlog || loading) return;
 
-      console.log("test");
-
       async function refreshScrollArea() {
+        // re-render component of <BlogContent/> that uses selectedBlog as prop
+        // re-render the Blog Page and refresh its scrollTrigger
+        // re-render of <BlogContent/> and Blog page simultaneously will fail to update the ScrollTrigger to get the latest scroll area
+        // refresh scroll trigger has an offset of 0.1s to update after the <BlogContent/> re-renders
         await setTimeout(() => {
           ScrollTrigger.refresh();
         }, 100);
@@ -103,17 +105,12 @@ export default function Blog() {
 
       refreshScrollArea();
 
-      // re-render component of <BlogContent/> that uses selectedBlog as prop
-      // re-render the Blog Page and refresh its scrollTrigger
-      // re-render of <BlogContent/> and Blog page simultaneously will fail to update the ScrollTrigger to get the latest scroll area
-      // refresh scroll trigger has an offset of 0.1s to update after the <BlogContent/> re-renders
-
       //alternative to setTimeOut
       // requestAnimationFrame(() => {
       //   ScrollTrigger.refresh();
       // });
     },
-    { scope: container, dependencies: [selectedBlog] },
+    { scope: container, dependencies: [selectedBlog , viewingIndex] },
   );
 
   if (loading) {

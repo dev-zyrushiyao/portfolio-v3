@@ -1,10 +1,16 @@
 "use server";
 
+import { cacheLife } from "next/cache";
+
 export type CategoryProp = { id: number; category_type: string };
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
 
 export async function getCategory(): Promise<CategoryProp[] | []> {
   "use cache";
+  cacheLife("weeks");
+  //cacheTag("categories")
+
+  //revalidateTag("categories") in CMS Server Action to clear old cache
 
   const res = await fetch(
     `https://ylfbtnwzwdzqsmipjzuv.supabase.co/rest/v1/category`,
@@ -15,7 +21,6 @@ export async function getCategory(): Promise<CategoryProp[] | []> {
         apikey: supabaseKey as string,
         Authorization: `Bearer ${supabaseKey}`,
       },
-      cache: "no-store",
     },
   );
 

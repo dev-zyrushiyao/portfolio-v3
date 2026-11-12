@@ -55,15 +55,15 @@ export default function BlogList({ blogs, setSelectedBlog }: BlogListProp) {
     ),
   };
 
-  //e sample value = 11 , 1 (Nov , January)
-  //blogs filtered if a blog month entries is equal to e value returns an array
+  //month sample value = 11 , 1 (Nov , January)
+  //blogs filtered if a blog month entries is equal to month value returns an array
   //.map returns an array of filtered array of blog entries
-  //sample data [november[{blog-1},{blog-2}], january[{blog-1}, {blog-2},{blog-3}]]
+  //sample data [november(11)[{blog-1},{blog-2}], january(1)[{blog-1}, {blog-2},{blog-3}]]
   //filteredMonthlyBlogs returns 2-D Array [[]]
   //loop map monthEntryPerYear in JSX then access the filteredMonthlyBlogs by the map index then use map filteredBlog to access its properties
-  const filteredMonthlyBlogs = monthEntryPerYear.numberFormat.map((e) => {
+  const filteredMonthlyBlogs = monthEntryPerYear.numberFormat.map((fmonth) => {
     return filteredYearBlogs.filter((fblog) => {
-      return new Date(fblog.created_at).getMonth() + 1 === e;
+      return new Date(fblog.created_at).getMonth() + 1 === fmonth;
     });
     // .reverse();
   });
@@ -128,7 +128,7 @@ export default function BlogList({ blogs, setSelectedBlog }: BlogListProp) {
         transformOrigin: "0% 0%",
       });
     },
-    { scope: container, dependencies: [blogs, currentIndex] },
+    { scope: container, dependencies: [currentIndex] },
   );
 
   function handlePrevYear() {

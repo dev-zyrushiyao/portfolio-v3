@@ -102,7 +102,6 @@ export default function Projects() {
         ScrollTrigger.create({
           trigger: projectWrapper,
           pin: wrapper,
-          // markers: true,
           start: `top 20%`,
           end: "bottom 20%",
           invalidateOnRefresh: true, //re-calculates scrollable area when ScrollTrigger.refresh() or update() is triggered.
@@ -121,7 +120,7 @@ export default function Projects() {
         });
       });
     },
-    { scope: container, dependencies: [isLoading] },
+    { scope: container, dependencies: [] },
   );
 
   //scroll trigger and inputRef refresh
