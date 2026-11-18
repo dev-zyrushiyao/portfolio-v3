@@ -207,7 +207,7 @@ export default function BlogList({ blogs, setSelectedBlog }: BlogListProp) {
   }
 
   return (
-    <div className="blog-list  border-2 border-gray-300 bg-gray-200 rounded-2xl p-5 hidden lg:block">
+    <div className="blog-list border-2 border-gray-300 bg-gray-200 rounded-2xl p-5 hidden lg:block">
       <div ref={container} className="blog-wrapper lg:w-50 w-full opacity-0">
         <div className="blog-year flex flex-row h-20 w-full gap-3 justify-center items-center">
           <button

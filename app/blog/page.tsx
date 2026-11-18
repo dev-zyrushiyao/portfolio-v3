@@ -61,18 +61,43 @@ export default function Blog() {
       const mm = gsap.matchMedia();
       mm.add("(min-width: 1001px)", () => {
         const wrapper = container.current?.querySelector(".wrapper");
-        const blogList = container.current?.querySelector(".blog-list");
+        const blogListWrapper =
+          container.current?.querySelector(".blog-list-wrapper");
         const blogContent = container.current?.querySelector(".blog-content");
-        if (!wrapper || !blogContent) return;
+        if (!wrapper || !blogContent || !blogContent || !blogListWrapper)
+          return;
+
+        function getPinStart(): number {
+          if (!blogListWrapper) return 0;
+          const rect = blogListWrapper.getBoundingClientRect();
+          const distanceToViewportTop = rect.top; //distance of pinned Element to viewport top
+          const pinElemheight = rect.height; //height size of pinned Element
+
+          const pinStart = distanceToViewportTop - pinElemheight;
+          return pinStart;
+        }
+
+        function getPinEnd(): number {
+          if (!blogListWrapper) return 0;
+          const rect = blogListWrapper.getBoundingClientRect();
+          const distanceToViewportTop = rect.top; //distance of pinned Element to viewport top
+          const pinElemheight = rect.height; //height size of pinned Element
+
+          const pinStart = distanceToViewportTop - pinElemheight;
+          const pinEnd = pinStart + pinElemheight;
+          return pinEnd;
+        }
 
         //ST Init
         ScrollTrigger.create({
           trigger: blogContent,
-          start: "top 10%",
-          end: "bottom 40%",
-          pin: blogList,
+          start: () => `top ${getPinStart()}px`,
+          end: () => `bottom ${getPinEnd()}px`,
+          pin: blogListWrapper,
+          invalidateOnRefresh: true,
           anticipatePin: 1,
-          // markers: true,
+          markers: true,
+          scrub: false,
         });
       });
     },
@@ -199,7 +224,7 @@ export default function Blog() {
             >
               {/* Blog section */}
               <div className="wrapper flex flex-col lg:flex-row lg:gap-10 gap-5">
-                <div className="blog-list h-fit min-w-60 w-fit lg:block hidden">
+                <div className="blog-list-wrapper h-fit min-w-60 w-fit lg:block hidden">
                   <BlogList blogs={blogs} setSelectedBlog={setSelectedBlog} />
                 </div>
 
